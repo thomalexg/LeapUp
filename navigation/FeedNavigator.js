@@ -1,13 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import ListingDetailsScreen from '../screens/ListingDetailsScreen';
-import ListingsScreen from '../screens/ListingsScreen';
+import LeapDetailsScreen from '../screens/LeapDetailsScreen';
+import LeapsScreen from '../screens/LeapsScreen';
 
 const Stack = createStackNavigator();
 
 export default FeedNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Petitions" component={ListingsScreen} />
-    <Stack.Screen name="Petition" component={ListingDetailsScreen} />
+    <Stack.Screen name="Leaps" component={LeapsScreen} />
+    <Stack.Screen name="Leap" component={LeapDetailsScreen} />
   </Stack.Navigator>
 );

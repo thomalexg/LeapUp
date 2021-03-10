@@ -31,15 +31,6 @@ function LoginScreen(props) {
         <FormField
           autoCapitalize="none"
           autoCorrect={false}
-          icon="account"
-          keyboardType="default"
-          name="username"
-          placeholder="username"
-          textContentType="username"
-        />
-        <FormField
-          autoCapitalize="none"
-          autoCorrect={false}
           icon="lock"
           name="password"
           placeholder="Password"

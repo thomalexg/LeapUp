@@ -6,7 +6,7 @@ import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton,
+  SubmitButton
 } from '../components/forms';
 import Screen from '../components/Screen';
 
@@ -79,7 +79,7 @@ const categories = [
   },
 ];
 
-function ListingEditScreen() {
+function LeapAddScreen() {
   return (
     <Screen style={styles.container}>
       <Form
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-export default ListingEditScreen;
+export default LeapAddScreen;

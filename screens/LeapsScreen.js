@@ -19,7 +19,7 @@ const listings = [
   },
 ];
 
-function ListingsScreen({ navigation }) {
+function LeapsScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <FlatList
@@ -30,7 +30,7 @@ function ListingsScreen({ navigation }) {
             title={item.title}
             subTitle={item.description}
             image={item.image}
-            onPress={() => navigation.navigate('ListingDetails', item)}
+            onPress={() => navigation.navigate('Leap', item)}
           />
         )}
       />
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListingsScreen;
+export default LeapsScreen;
