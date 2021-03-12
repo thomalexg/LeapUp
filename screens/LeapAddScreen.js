@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
+import leapsApi from '../api/leaps';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton
+  SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
 
@@ -69,17 +70,22 @@ const categories = [
     backgroundColor: '#a55eea',
     icon: 'format-paint',
     label: 'Design',
-    value: 8,
+    value: 9,
   },
   {
     backgroundColor: '#778ca3',
     icon: 'application',
     label: 'Other',
-    value: 9,
+    value: 10,
   },
 ];
 
 function LeapAddScreen() {
+  const handleSubmit = async (leap) => {
+    const result = leapsApi.addLeap(leap);
+    if (!result.ok) return alert('Could not upload leap!');
+    alert('Listing uploaded!');
+  };
   return (
     <Screen style={styles.container}>
       <Form
@@ -88,7 +94,7 @@ function LeapAddScreen() {
           description: '',
           category: null,
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit()}
         validationSchema={validationSchema}
       >
         <FormField maxLength={255} name="title" placeholder="Title" />

@@ -11,7 +11,7 @@ function LeapDetailsScreen({ route }) {
       <Image style={styles.image} source={require('../assets/jacket.jpg')} />
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{listing.title}</Text>
-        <Text style={styles.price}>{listing.description}</Text>
+        <Text style={styles.description}>{listing.description}</Text>
         <View style={styles.userContainer}>
           <ListItem
             image={require('../assets/thomas.jpg')}
@@ -32,13 +32,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
-  price: {
-    color: colors.secondary,
-    fontWeight: 'bold',
+  description: {
+    color: colors.dark,
     fontSize: 20,
     marginVertical: 10,
   },
   title: {
+    color: colors.secondary,
     fontSize: 24,
     fontWeight: '500',
   },

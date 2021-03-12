@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import 'react-native-gesture-handler';
+// import AuthNavigator from './navigation/AuthNavigator';
 import AppNavigator from './navigation/AppNavigator';
 
 const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ export default App = () => {
   return (
     <NavigationContainer>
       <AppNavigator />
+      {/* <AuthNavigator /> */}
     </NavigationContainer>
   );
 };
