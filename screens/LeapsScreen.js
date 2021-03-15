@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, StyleSheet } from 'react-native';
+// import { FlatList } from 'react-native-gesture-handler';
 import leapsApi from '../api/leaps';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
@@ -40,7 +40,8 @@ function LeapsScreen({ navigation }) {
   const [leaps, setLeaps] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log('leaps', leaps[0]);
+  const [refreshing, setRefreshing] = useState(false);
+  // console.log('leaps', leaps[0]);
 
   useEffect(() => {
     loadLeaps();
@@ -70,7 +71,11 @@ function LeapsScreen({ navigation }) {
       )}
       <ActivityIndicator visible={loading} />
       <FlatList
-        data={leaps}
+        refreshing={refreshing}
+        onRefresh={() => {
+          loadLeaps();
+        }}
+        data={leaps.sort((a, b) => a.id < b.id)}
         keyExtractor={(leaps) => leaps.id.toString()}
         renderItem={({ item }) => (
           <Card

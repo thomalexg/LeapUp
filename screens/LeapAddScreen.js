@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
-import leapsApi from '../api/leaps';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {
   Form,
@@ -81,10 +80,34 @@ const categories = [
 ];
 
 function LeapAddScreen() {
+  // const handleSubmit = async (leap) => {
+  //   const result = await leapsApi.addLeap(leap);
+  //   if (!result.ok) return alert('Could not upload leap!');
+  //   alert('Listing uploaded!');
+  // };
   const handleSubmit = async (leap) => {
-    const result = leapsApi.addLeap(leap);
-    if (!result.ok) return alert('Could not upload leap!');
-    alert('Listing uploaded!');
+    try {
+      const response = await fetch('http://192.168.0.80:3000/api/leaps', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: leap.title,
+          category_id: leap.category.value,
+          description: leap.description,
+        }),
+      });
+    } catch (err) {
+      console.log('error', error);
+      return alert('Could not upload leap!');
+    }
+    // console.log(response.status);
+    // if (response.status !== 200) {
+    //   return alert('Could not upload leap!');
+    // }
+    // alert('Listing uploaded!');
+    // const createdLeap = await response.json();
   };
   return (
     <Screen style={styles.container}>
@@ -94,7 +117,7 @@ function LeapAddScreen() {
           description: '',
           category: null,
         }}
-        onSubmit={handleSubmit()}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormField maxLength={255} name="title" placeholder="Title" />
