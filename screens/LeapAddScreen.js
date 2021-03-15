@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
+import leapsApi from '../api/leaps';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {
   Form,
@@ -9,6 +10,7 @@ import {
   SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
+import UploadScreen from './UploadScreen';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
@@ -80,38 +82,30 @@ const categories = [
 ];
 
 function LeapAddScreen() {
-  // const handleSubmit = async (leap) => {
-  //   const result = await leapsApi.addLeap(leap);
-  //   if (!result.ok) return alert('Could not upload leap!');
-  //   alert('Listing uploaded!');
-  // };
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const handleSubmit = async (leap, { resetForm }) => {
-    try {
-      const response = await fetch('http://192.168.0.80:3000/api/leaps', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: leap.title,
-          category_id: leap.category.value,
-          description: leap.description,
-        }),
-      });
-    } catch (err) {
-      console.log('error', error);
-      return alert('Could not upload leap!');
+    setProgress(0);
+    setUploadVisible(true);
+    const result = await leapsApi.addLeap(leap, (progress) =>
+      setProgress(progress),
+    );
+
+    if (!result) {
+      setUploadVisible(false);
+      return alert('Could not add new leap :(');
     }
     resetForm();
-    // console.log(response.status);
-    // if (response.status !== 200) {
-    //   return alert('Could not upload leap!');
-    // }
-    // alert('Listing uploaded!');
-    // const createdLeap = await response.json();
   };
+
   return (
     <Screen style={styles.container}>
+      <UploadScreen
+        onDone={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <Form
         initialValues={{
           title: '',
