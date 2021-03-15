@@ -85,7 +85,7 @@ function LeapAddScreen() {
   //   if (!result.ok) return alert('Could not upload leap!');
   //   alert('Listing uploaded!');
   // };
-  const handleSubmit = async (leap) => {
+  const handleSubmit = async (leap, { resetForm }) => {
     try {
       const response = await fetch('http://192.168.0.80:3000/api/leaps', {
         method: 'POST',
@@ -102,6 +102,7 @@ function LeapAddScreen() {
       console.log('error', error);
       return alert('Could not upload leap!');
     }
+    resetForm();
     // console.log(response.status);
     // if (response.status !== 200) {
     //   return alert('Could not upload leap!');
