@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
+import registerApi from '../api/register';
 import sessionApi from '../api/session';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
 import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().min(4).label('First Name'),
-  lastName: Yup.string().required().min(4).label('Last Name'),
   username: Yup.string().required().min(4).label('Username'),
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
 });
 
 function RegisterScreen() {
+  const [authNotification, setAuthNotification] = useState(false);
+
   useEffect(() => {
     getSession();
   }, []);
@@ -28,49 +30,33 @@ function RegisterScreen() {
     }
     console.log('session:', session);
     console.log('cachedsession:', cachedSession);
-
     // This works
     // const response = await sessionApi.getSession();
     // console.log(response.data);
     // cache.store('session', response.data);
     // const storedSession = await cache.get('session');
     // console.log('Cache:', storedSession);
-    // This does not work:
-    // const token =
-    //   (await cache.get('session', 5)) || (await sessionApi.getSession().token);
-    // if (!(await cache.get('session', 5))) {
-    //   cache.store('session', await sessionApi.getSession());
-    // }
-    // const response = await sessionApi.getSession();
-    // console.log(response.data);
-    // cache.store('session', response.data);
-    // console.log('Cache:', storedSession);
+  };
+  const handleSubmit = async (user) => {
+    setAuthNotification(false);
+    const result = registerApi.register(user);
+
+    if (!result) {
+      setAuthNotification(true);
+    }
   };
   return (
     <Screen style={styles.container}>
+      {authNotification && <TextInput>User already exists!</TextInput>}
       <Form
         initialValues={{
-          firstName: '',
-          lastName: '',
           username: '',
           email: '',
           password: '',
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(user) => registerApi.register(user)}
         validationSchema={validationSchema}
       >
-        <FormField
-          autoCorrect={false}
-          icon="account"
-          name="firstName"
-          placeholder="First Name"
-        />
-        <FormField
-          autoCorrect={false}
-          icon="account"
-          name="lastName"
-          placeholder="Last Name"
-        />
         <FormField
           autoCorrect={false}
           icon="account"
