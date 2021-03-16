@@ -1,8 +1,5 @@
 import { useNetInfo } from '@react-native-community/netinfo';
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-// import { FlatList } from 'react-native-gesture-handler';
-import leapsApi from '../api/leaps';
+import { StyleSheet } from 'react-native';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import Card from '../components/Card';

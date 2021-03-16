@@ -25,14 +25,19 @@ const isExpired = (item) => {
 
 const get = async (key) => {
   try {
-    const value = AsyncStorage.getItem(prefix + key);
+    // console.log('prefix', prefix);
+    // console.log('key', key);
+    const value = await AsyncStorage.getItem(prefix + key);
+    // console.log('value', value);
     const item = JSON.parse(value);
+    // console.log('item', item);
 
     if (!item) return null;
 
     if (isExpired(item)) {
-      awiat AsyncStorage.removeItem(prefix + key)
+      await AsyncStorage.removeItem(prefix + key);
     }
+    return item;
   } catch (error) {
     console.log(error);
   }

@@ -2,8 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import 'react-native-gesture-handler';
-// import AuthNavigator from './navigation/AuthNavigator';
-import AppNavigator from './navigation/AppNavigator';
+import AuthNavigator from './navigation/AuthNavigator';
+// import AppNavigator from './navigation/AppNavigator';
 
 const Stack = createStackNavigator();
 
@@ -16,8 +16,8 @@ const forFade = ({ current }) => ({
 export default App = () => {
   return (
     <NavigationContainer>
-      <AppNavigator />
-      {/* <AuthNavigator /> */}
+      {/* <AppNavigator /> */}
+      <AuthNavigator />
     </NavigationContainer>
   );
 };

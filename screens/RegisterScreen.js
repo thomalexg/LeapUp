@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
+import sessionApi from '../api/session';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
+import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().min(4).label('First Name'),
@@ -13,6 +15,17 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen() {
+  useEffect(() => {
+    getSession();
+  }, []);
+
+  const getSession = async () => {
+    const response = await sessionApi.getSession();
+    console.log(response.data);
+    cache.store('session', response.data);
+    const storedSession = await cache.get('session');
+    console.log('Cache:', storedSession);
+  };
   return (
     <Screen style={styles.container}>
       <Form
