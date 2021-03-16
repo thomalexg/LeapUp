@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
+import sessionApi from '../api/session';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
+import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().min(4).label('First Name'),
@@ -18,11 +20,15 @@ function RegisterScreen() {
   }, []);
 
   const getSession = async () => {
-    // const cachedSession = await cache.get('session', 5);
-    // const session = cachedSession || (await sessionApi.getSession());
-    // if (!cachedSession) {
-    //   cache.store('session', session.data);
-    // }
+    const cachedSession = await cache.get('session', 5);
+    const session =
+      cachedSession !== null ? cachedSession : await sessionApi.getSession();
+    if (!cachedSession) {
+      cache.store('session', session.data);
+    }
+    console.log('session:', session);
+    console.log('cachedsession:', cachedSession);
+
     // This works
     // const response = await sessionApi.getSession();
     // console.log(response.data);
