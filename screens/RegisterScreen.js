@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
-import sessionApi from '../api/session';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
-import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().min(4).label('First Name'),
@@ -20,11 +18,27 @@ function RegisterScreen() {
   }, []);
 
   const getSession = async () => {
-    const response = await sessionApi.getSession();
-    console.log(response.data);
-    cache.store('session', response.data);
-    const storedSession = await cache.get('session');
-    console.log('Cache:', storedSession);
+    // const cachedSession = await cache.get('session', 5);
+    // const session = cachedSession || (await sessionApi.getSession());
+    // if (!cachedSession) {
+    //   cache.store('session', session.data);
+    // }
+    // This works
+    // const response = await sessionApi.getSession();
+    // console.log(response.data);
+    // cache.store('session', response.data);
+    // const storedSession = await cache.get('session');
+    // console.log('Cache:', storedSession);
+    // This does not work:
+    // const token =
+    //   (await cache.get('session', 5)) || (await sessionApi.getSession().token);
+    // if (!(await cache.get('session', 5))) {
+    //   cache.store('session', await sessionApi.getSession());
+    // }
+    // const response = await sessionApi.getSession();
+    // console.log(response.data);
+    // cache.store('session', response.data);
+    // console.log('Cache:', storedSession);
   };
   return (
     <Screen style={styles.container}>
