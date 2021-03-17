@@ -1,12 +1,11 @@
-import cache from '../utility/cache';
 import client from './client';
 
 const endpoint = '/register';
 
-const getSession = async () => {
-  const cachedSession = await cache.get('session', 5);
-  return cachedSession.value.token;
-};
+// const getSession = async () => {
+//   const cachedSession = await cache.get('session', 5);
+//   return cachedSession.value.token;
+// };
 
 export const register = async (user) => {
   return client.post(
@@ -15,7 +14,7 @@ export const register = async (user) => {
       username: user.username,
       email: user.email,
       password: user.password,
-      sessionToken: await getSession(),
+      // sessionToken: await getSession(),
     },
     // {
     //   onUploadProgress: (progress) =>

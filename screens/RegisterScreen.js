@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import registerApi from '../api/register';
-import sessionApi from '../api/session';
+import AuthContext from '../auth/context';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
+import AppText from '../components/Text';
 import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
@@ -15,46 +15,50 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen() {
+  const authContext = useContext(AuthContext);
   const [authNotification, setAuthNotification] = useState(false);
 
-  useEffect(() => {
-    getSession();
-  }, []);
+  // useEffect(() => {
+  //   getSession();
+  // }, []);
 
-  const getSession = async () => {
-    const cachedSession = await cache.get('session', 5);
-    const session =
-      cachedSession !== null ? cachedSession : await sessionApi.getSession();
-    if (!cachedSession) {
-      cache.store('session', session.data);
-    }
-    console.log('session:', session);
-    console.log('cachedsession:', cachedSession);
-    // This works
-    // const response = await sessionApi.getSession();
-    // console.log(response.data);
-    // cache.store('session', response.data);
-    // const storedSession = await cache.get('session');
-    // console.log('Cache:', storedSession);
-  };
+  // const getSession = async () => {
+  //   const cachedSession = await cache.get('session', 5);
+  //   const session =
+  //     cachedSession !== null ? cachedSession : await sessionApi.getSession();
+  //   if (!cachedSession) {
+  //     cache.store('session', session.data);
+  //   }
+
+  // This works
+  // const response = await sessionApi.getSession();
+  // console.log(response.data);
+  // cache.store('session', response.data);
+  // const storedSession = await cache.get('session');
+  // console.log('Cache:', storedSession);
+  // };
   const handleSubmit = async (user) => {
     setAuthNotification(false);
-    const result = registerApi.register(user);
-
-    if (!result) {
-      setAuthNotification(true);
+    const result = await registerApi.register(user);
+    console.log(result);
+    if (!result.ok) {
+      return setAuthNotification(true);
     }
+    console.log('This should be the user:', result.data.user);
+    await cache.store('user', result.data.user);
+    const getUser = await cache.get('user', 5);
+    authContext.setUser(getUser);
   };
   return (
     <Screen style={styles.container}>
-      {authNotification && <TextInput>User already exists!</TextInput>}
+      {authNotification && <AppText>User already exists!</AppText>}
       <Form
         initialValues={{
           username: '',
           email: '',
           password: '',
         }}
-        onSubmit={(user) => registerApi.register(user)}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormField
