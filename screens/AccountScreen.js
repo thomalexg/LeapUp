@@ -16,6 +16,7 @@ const menuItems = [
       name: 'format-list-bulleted',
       backgroundColor: colors.primary,
     },
+    targetScreen: routes.MYLEAPS,
   },
   {
     title: 'Favourites',

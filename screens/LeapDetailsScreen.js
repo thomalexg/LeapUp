@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import AuthContext from '../auth/context';
+import Icon from '../components/Icon';
 import ListItem from '../components/lists/ListItem';
 import Text from '../components/Text';
 import colors from '../config/colors';
 
 function LeapDetailsScreen({ route }) {
+  const authContext = useContext(AuthContext);
   const listing = route.params;
   return (
     <ScrollView>
@@ -14,9 +17,12 @@ function LeapDetailsScreen({ route }) {
         <Text style={styles.description}>{listing.description}</Text>
         <View style={styles.userContainer}>
           <ListItem
-            image={require('../assets/thomas.jpg')}
-            title="thomalex"
+            // image={require('../assets/thomas.jpg')}
+            title={listing.username || 'No username available'}
             subTitle="3 Leaps"
+            IconComponent={
+              <Icon name="account" backgroundColor={colors.third} />
+            }
           />
         </View>
       </View>

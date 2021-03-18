@@ -1,9 +1,9 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-// import { FlatList } from 'react-native-gesture-handler';
-import leapsApi from '../api/leaps';
 import logoutApi from '../api/logout';
+// import { FlatList } from 'react-native-gesture-handler';
+import myLeapsApi from '../api/myLeaps';
 import AuthContext from '../auth/context';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
@@ -30,7 +30,8 @@ function LeapsScreen({ navigation }) {
 
   const loadLeaps = async () => {
     setLoading(true);
-    const response = await leapsApi.getLeaps();
+    console.log('this should be the user id', authContext.user.value.id);
+    const response = await myLeapsApi.getMyLeaps(authContext.user.value.id);
     console.log('response of leaps', response.data.errors);
     setLoading(false);
 

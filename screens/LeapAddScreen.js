@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
 import leapsApi from '../api/leaps';
+import AuthContext from '../auth/context';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {
   Form,
@@ -82,13 +83,17 @@ const categories = [
 ];
 
 function LeapAddScreen() {
+  const authContext = useContext(AuthContext);
+  // console.log('ADDScreen user', authContext.user);
+  const user = authContext.user;
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (leap, { resetForm }) => {
+    console.log('userAdd', user);
     setProgress(0);
     setUploadVisible(true);
-    const result = await leapsApi.addLeap(leap, (progress) =>
+    const result = await leapsApi.addLeap(leap, user, (progress) =>
       setProgress(progress),
     );
 

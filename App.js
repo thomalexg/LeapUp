@@ -21,7 +21,7 @@ export default App = () => {
 
   useEffect(() => {
     (async () => {
-      setUser(await cache.get('user', 5));
+      setUser(await cache.get('user', 43200));
     })();
   }, [setUser, cache]);
   // const getUser = async () => {
