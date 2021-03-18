@@ -43,4 +43,13 @@ const get = async (key, expiryInMinutes) => {
   }
 };
 
-export default { store, get };
+const deleteUser = async (key) => {
+  try {
+    const noUser = await AsyncStorage.removeItem(prefix + key);
+    return noUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default { store, get, deleteUser };

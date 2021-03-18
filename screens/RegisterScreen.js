@@ -3,9 +3,13 @@ import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
 import registerApi from '../api/register';
 import AuthContext from '../auth/context';
-import { Form, FormField, SubmitButton } from '../components/forms';
+import {
+  ErrorMessage,
+  Form,
+  FormField,
+  SubmitButton
+} from '../components/forms';
 import Screen from '../components/Screen';
-import AppText from '../components/Text';
 import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
@@ -40,18 +44,21 @@ function RegisterScreen() {
   const handleSubmit = async (user) => {
     setAuthNotification(false);
     const result = await registerApi.register(user);
-    console.log(result);
-    if (!result.ok) {
+    console.log('result', result);
+    if (!result) {
+      return;
+    } else if (result?.ok === false) {
       return setAuthNotification(true);
     }
     console.log('This should be the user:', result.data.user);
+    console.log('session:', result.data.token);
     await cache.store('user', result.data.user);
     const getUser = await cache.get('user', 5);
     authContext.setUser(getUser);
   };
   return (
     <Screen style={styles.container}>
-      {authNotification && <AppText>User already exists!</AppText>}
+      {/* {authNotification && <AppText>User already exists!</AppText>} */}
       <Form
         initialValues={{
           username: '',
@@ -61,11 +68,16 @@ function RegisterScreen() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
+        <ErrorMessage
+          error="Invalid mail, username or password!"
+          visible={authNotification}
+        />
         <FormField
           autoCorrect={false}
           icon="account"
           name="username"
           placeholder="Username"
+          textContentType="username"
         />
         <FormField
           autoCapitalize="none"

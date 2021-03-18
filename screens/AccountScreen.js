@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import logoutApi from '../api/logout';
+import AuthContext from '../auth/context';
 import Icon from '../components/Icon';
 import { ListItem, ListItemSeparator } from '../components/lists';
 import Screen from '../components/Screen';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
+import cache from '../utility/cache';
 
 const menuItems = [
   {
@@ -32,13 +35,21 @@ const menuItems = [
 ];
 
 function AccountScreen({ navigation }) {
+  const authContext = useContext(AuthContext);
+  // console.log('Account user', authContext.user);
+  useEffect(() => {
+    (async () => {
+      authContext.setUser(await cache.get('user', 5));
+    })();
+  }, [authContext.setUser, cache]);
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="thomalex"
-          subTitle="thomas.gae@posteo.de"
-          image={require('../assets/thomas.jpg')}
+          title={authContext?.user.value.username || username}
+          subTitle={authContext?.user.value.email || email}
+          // image={require('../assets/thomas.jpg')}
+          IconComponent={<Icon name="account" backgroundColor={colors.third} />}
         />
       </View>
       <View style={styles.container}>
@@ -64,6 +75,12 @@ function AccountScreen({ navigation }) {
       <ListItem
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
+        onPress={async () => {
+          const deletedUser = await cache.deleteUser('user');
+          console.log('deleteduser', deletedUser);
+          authContext.setUser(deletedUser);
+          await logoutApi.logout();
+        }}
       />
     </Screen>
   );

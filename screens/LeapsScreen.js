@@ -1,7 +1,7 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, StyleSheet } from 'react-native';
+// import { FlatList } from 'react-native-gesture-handler';
 import leapsApi from '../api/leaps';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
@@ -17,7 +17,7 @@ function LeapsScreen({ navigation }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  console.log('leaps', leaps[0]);
+  // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
 
   fetch('https://www.npmjs.com/package/moment');
@@ -29,8 +29,13 @@ function LeapsScreen({ navigation }) {
   const loadLeaps = async () => {
     setLoading(true);
     const response = await leapsApi.getLeaps();
-    // console.log(response);
+    console.log('response', response);
     setLoading(false);
+    // if (response.data.errrors[0].message === 'no valid token') {
+    //   console.log('should delete user after this line');
+    //   cache.getUser('user', 5);
+    // }
+
     if (!response.ok) {
       setLoading(false);
       return setError(true);
