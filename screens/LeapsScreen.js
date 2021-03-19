@@ -1,13 +1,12 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-// import { FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import leapsApi from '../api/leaps';
-import logoutApi from '../api/logout';
 import AuthContext from '../auth/context';
 import ActivityIndicator from '../components/ActivityIndicator';
-import AppButton from '../components/Button';
 import Card from '../components/Card';
+import FilterButton from '../components/FilterButton';
 import Screen from '../components/Screen';
 import AppText from '../components/Text';
 import colors from '../config/colors';
@@ -60,6 +59,9 @@ function LeapsScreen({ navigation }) {
 
   return (
     <Screen style={styles.screen}>
+      <View>
+        <FilterButton title="filter" color="third" />
+      </View>
       {error && (
         <>
           <AppText>Couldn´t retrieve the leaps</AppText>

@@ -13,27 +13,30 @@ function LeapDetailsScreen({ route, navigation }) {
   const usernameContext = useContext(UsernameContext);
   const listing = route.params;
   return (
-    <ScrollView>
-      {/* <Image style={styles.image} source={require('../assets/jacket.jpg')} /> */}
-      <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{listing.title}</Text>
-        <Text style={styles.description}>{listing.description}</Text>
-        <View style={styles.userContainer}>
-          <ListItem
-            // image={require('../assets/thomas.jpg')}
-            title={listing.username || 'No username available'}
-            // subTitle="3 Leaps"
-            IconComponent={
-              <Icon name="account" backgroundColor={colors.third} />
-            }
-            onPress={() => {
-              usernameContext.setUsername(listing.username);
-              navigation.navigate(routes.LEAPS_OF_USER);
-            }}
-          />
+    <>
+
+      <ScrollView>
+        {/* <Image style={styles.image} source={require('../assets/jacket.jpg')} /> */}
+        <View style={styles.detailsContainer}>
+          <Text style={styles.title}>{listing.title}</Text>
+          <Text style={styles.description}>{listing.description}</Text>
+          <View style={styles.userContainer}>
+            <ListItem
+              // image={require('../assets/thomas.jpg')}
+              title={listing.username || 'No username available'}
+              // subTitle="3 Leaps"
+              IconComponent={
+                <Icon name="account" backgroundColor={colors.third} />
+              }
+              onPress={() => {
+                usernameContext.setUsername(listing.username);
+                navigation.navigate(routes.LEAPS_OF_USER);
+              }}
+            />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 
