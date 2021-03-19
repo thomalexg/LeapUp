@@ -1,10 +1,10 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-// import { FlatList } from 'react-native-gesture-handler';
-import leapsApi from '../api/leaps';
+import leapsByUsernameApi from '../api/getLeapsByUsername';
 import logoutApi from '../api/logout';
 import AuthContext from '../auth/context';
+import UsernameContext from '../auth/usernameContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import Card from '../components/Card';
@@ -16,6 +16,7 @@ import cache from '../utility/cache';
 // import {useNetInfo} from 'react-native-community/netinfo';
 
 function LeapsScreen({ navigation }) {
+  const usernameContext = useContext(UsernameContext);
   const authContext = useContext(AuthContext);
   const [leaps, setLeaps] = useState([]);
   const [error, setError] = useState(false);
@@ -30,14 +31,15 @@ function LeapsScreen({ navigation }) {
 
   const loadLeaps = async () => {
     setLoading(true);
-    const response = await leapsApi.getLeaps();
-    // console.log('response of leaps', response.data.errors);
+    console.log('user inside leaps by username', usernameContext.username);
+    const response = await leapsByUsernameApi.getLeapsByUsername(
+      usernameContext.username,
+    );
+    console.log('response of leaps', response.data.errors);
     setLoading(false);
 
     if (response.data?.errors?.[0]?.message === 'no valid token') {
-      // console.log('should delete user after this line');
       const deletedUser = await cache.deleteUser('user');
-      console.log('deleteduser', deletedUser);
       authContext.setUser(deletedUser);
       await logoutApi.logout();
     }

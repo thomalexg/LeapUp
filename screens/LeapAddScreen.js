@@ -27,7 +27,7 @@ function LeapAddScreen() {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [categories, setCategories] = useState([]);
-  console.log('The categories', categories);
+  // console.log('The categories', categories);
   useEffect(() => {
     const categorieFunc = async () => {
       const getCategories = await categoriesApi.getCategories();
@@ -38,7 +38,7 @@ function LeapAddScreen() {
   }, []);
 
   const handleSubmit = async (leap, { resetForm }) => {
-    console.log('userAdd', user);
+    // console.log('userAdd', user);
     setProgress(0);
     setUploadVisible(true);
     const result = await leapsApi.addLeap(leap, user, (progress) =>

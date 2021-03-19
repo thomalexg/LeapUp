@@ -4,5 +4,6 @@ export default Object.freeze({
   LOGIN: 'Login',
   MESSAGES: 'Messages',
   REGISTER: 'Register',
-  MYLEAPS: "My Leaps",
+  MYLEAPS: 'My Leaps',
+  LEAPS_OF_USER: 'Leaps of User',
 });

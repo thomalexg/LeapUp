@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
 import AuthContext from './auth/context';
+import UsernameContext from './auth/usernameContext';
 import AppNavigator from './navigation/AppNavigator';
 import AuthNavigator from './navigation/AuthNavigator';
 import cache from './utility/cache';
@@ -17,7 +18,8 @@ const forFade = ({ current }) => ({
 
 export default App = () => {
   const [user, setUser] = useState(null);
-  console.log('user', user);
+  const [username, setUsername] = useState('');
+  // console.log('user', user);
 
   useEffect(() => {
     (async () => {
@@ -31,11 +33,13 @@ export default App = () => {
   // };
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      <NavigationContainer>
-        {user ? <AppNavigator /> : <AuthNavigator setUser={setUser} />}
-        {/* <AppNavigator /> */}
-        {/* <AuthNavigator /> */}
-      </NavigationContainer>
+      <UsernameContext.Provider value={{ username, setUsername }}>
+        <NavigationContainer>
+          {user ? <AppNavigator /> : <AuthNavigator setUser={setUser} />}
+          {/* <AppNavigator /> */}
+          {/* <AuthNavigator /> */}
+        </NavigationContainer>
+      </UsernameContext.Provider>
     </AuthContext.Provider>
   );
 };
