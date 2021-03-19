@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
 import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Modal,
   Button,
   FlatList,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-import Text from "./Text";
-import defaultStyles from "../config/styles";
-import PickerItem from "./PickerItem";
-import Screen from "./Screen";
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import defaultStyles from '../config/styles';
+import PickerItem from './PickerItem';
+import Screen from './Screen';
+import Text from './Text';
 
 function AppPicker({
   icon,
@@ -22,7 +21,7 @@ function AppPicker({
   PickerItemComponent = PickerItem,
   placeholder,
   selectedItem,
-  width = "100%",
+  width = '100%',
 }) {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -39,7 +38,7 @@ function AppPicker({
             />
           )}
           {selectedItem ? (
-            <Text style={styles.text}>{selectedItem.label}</Text>
+            <Text style={styles.text}>{selectedItem.category}</Text>
           ) : (
             <Text style={styles.placeholder}>{placeholder}</Text>
           )}
@@ -56,12 +55,12 @@ function AppPicker({
           <Button title="Close" onPress={() => setModalVisible(false)} />
           <FlatList
             data={items}
-            keyExtractor={(item) => item.value.toString()}
+            keyExtractor={(item) => item.id.toString()}
             numColumns={numberOfColumns}
             renderItem={({ item }) => (
               <PickerItemComponent
                 item={item}
-                label={item.label}
+                label={item.category}
                 onPress={() => {
                   setModalVisible(false);
                   onSelectItem(item);
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: defaultStyles.colors.light,
     borderRadius: 25,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 15,
     marginVertical: 10,
   },

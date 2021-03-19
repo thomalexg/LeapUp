@@ -5,7 +5,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import colors from '../config/colors';
 import Text from './Text';
 
-function Card({ title, subTitle, onPress }) {
+function Card({ title, subTitle, onPress, renderRightActions }) {
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableWithoutFeedback onPress={onPress}>

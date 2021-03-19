@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
+import categoriesApi from '../api/categories';
 import leapsApi from '../api/leaps';
 import AuthContext from '../auth/context';
 import CategoryPickerItem from '../components/CategoryPickerItem';
@@ -19,75 +20,22 @@ const validationSchema = Yup.object().shape({
   category: Yup.object().required().nullable().label('Category'),
 });
 
-const categories = [
-  {
-    backgroundColor: '#fc5c65',
-    icon: 'guitar-acoustic',
-    label: 'Music',
-    value: 1,
-  },
-  {
-    backgroundColor: '#fd9644',
-    icon: 'language-javascript',
-    label: 'Programming',
-    value: 2,
-  },
-  {
-    backgroundColor: '#fed330',
-    icon: 'camera',
-    label: 'Photography',
-    value: 3,
-  },
-  {
-    backgroundColor: '#26de81',
-    icon: 'cards',
-    label: 'Games',
-    value: 4,
-  },
-  {
-    backgroundColor: '#2bcbba',
-    icon: 'shoe-heel',
-    label: 'Clothing',
-    value: 5,
-  },
-  {
-    backgroundColor: '#45aaf2',
-    icon: 'basketball',
-    label: 'Sports',
-    value: 6,
-  },
-  {
-    backgroundColor: '#4b7bec',
-    icon: 'video',
-    label: 'Videography',
-    value: 7,
-  },
-  {
-    backgroundColor: '#a55eea',
-    icon: 'book-open-variant',
-    label: 'Books',
-    value: 8,
-  },
-  {
-    backgroundColor: '#a55eea',
-    icon: 'format-paint',
-    label: 'Design',
-    value: 9,
-  },
-  {
-    backgroundColor: '#778ca3',
-    icon: 'application',
-    label: 'Other',
-    value: 10,
-  },
-];
-
 function LeapAddScreen() {
   const authContext = useContext(AuthContext);
   // console.log('ADDScreen user', authContext.user);
   const user = authContext.user;
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [categories, setCategories] = useState([]);
+  console.log('The categories', categories);
+  useEffect(() => {
+    const categorieFunc = async () => {
+      const getCategories = await categoriesApi.getCategories();
+      // console.log('The categories should be here:', getCategories.data);
+      setCategories(getCategories.data);
+    };
+    categorieFunc();
+  }, []);
 
   const handleSubmit = async (leap, { resetForm }) => {
     console.log('userAdd', user);
@@ -120,6 +68,7 @@ function LeapAddScreen() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
+        {/* {console.log('categories', categories)} */}
         <FormField maxLength={255} name="title" placeholder="Title" />
         <Picker
           items={categories}

@@ -1,6 +1,7 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import deleteLeapApi from '../api/deleteLeap';
 import logoutApi from '../api/logout';
 // import { FlatList } from 'react-native-gesture-handler';
 import myLeapsApi from '../api/myLeaps';
@@ -8,6 +9,7 @@ import AuthContext from '../auth/context';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import Card from '../components/Card';
+import { ListItemDeleteAction } from '../components/lists';
 import Screen from '../components/Screen';
 import AppText from '../components/Text';
 import colors from '../config/colors';
@@ -59,6 +61,12 @@ function LeapsScreen({ navigation }) {
     );
   }
 
+  const handleDelete = async (item) => {
+    // console.log('item', item);
+    await deleteLeapApi.deleteLeap(item);
+    loadLeaps();
+  };
+
   return (
     <Screen style={styles.screen}>
       {error && (
@@ -82,6 +90,9 @@ function LeapsScreen({ navigation }) {
             subTitle={item.description}
             // image={leap.image}
             onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
+            renderRightActions={() => (
+              <ListItemDeleteAction onPress={() => handleDelete(item)} />
+            )}
           />
         )}
       />
