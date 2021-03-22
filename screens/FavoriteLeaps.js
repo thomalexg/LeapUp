@@ -1,12 +1,15 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import deleteLeapApi from '../api/deleteLeap';
 // import { FlatList } from 'react-native-gesture-handler';
-import leapsApi from '../api/leaps';
+import getFavoriteLeapsApi from '../api/getFavoriteLeaps';
+import logoutApi from '../api/logout';
 import AuthContext from '../auth/context';
 import ActivityIndicator from '../components/ActivityIndicator';
+import AppButton from '../components/Button';
 import Card from '../components/Card';
-import FilterButton from '../components/FilterButton';
+import { ListItemDeleteAction } from '../components/lists';
 import Screen from '../components/Screen';
 import AppText from '../components/Text';
 import colors from '../config/colors';
@@ -29,15 +32,17 @@ function LeapsScreen({ navigation }) {
 
   const loadLeaps = async () => {
     setLoading(true);
-    const response = await leapsApi.getLeaps();
-    // console.log('response of leaps', response.data.errors);
+    const response = await getFavoriteLeapsApi.getFavoriteLeaps(
+      authContext.user.value.id,
+    );
+    console.log('response of leaps', response.data.errors);
     setLoading(false);
 
     if (response.data?.errors?.[0]?.message === 'no valid token') {
-      // console.log('should delete user after this line');
+      console.log('should delete user after this line');
       const deletedUser = await cache.deleteUser('user');
       console.log('deleteduser', deletedUser);
-      await authContext.setUser(deletedUser);
+      authContext.setUser(deletedUser);
       await logoutApi.logout();
     }
 
@@ -57,11 +62,14 @@ function LeapsScreen({ navigation }) {
     );
   }
 
+  const handleDelete = async (item) => {
+    // console.log('item', item);
+    await deleteLeapApi.deleteLeap(item);
+    loadLeaps();
+  };
+
   return (
     <Screen style={styles.screen}>
-      <View>
-        <FilterButton title="filter" color="third" />
-      </View>
       {error && (
         <>
           <AppText>Couldn´t retrieve the leaps</AppText>
@@ -83,6 +91,9 @@ function LeapsScreen({ navigation }) {
             subTitle={item.description}
             // image={leap.image}
             onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
+            renderRightActions={() => (
+              <ListItemDeleteAction onPress={() => handleDelete(item)} />
+            )}
           />
         )}
       />

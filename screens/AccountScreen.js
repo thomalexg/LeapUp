@@ -24,6 +24,7 @@ const menuItems = [
       name: 'star',
       backgroundColor: 'gold',
     },
+    targetScreen: routes.FAVORITELEAPS,
   },
   {
     title: 'My Messages',

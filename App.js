@@ -2,7 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
+import locationsApi from './api/getLocations';
 import AuthContext from './auth/context';
+import LocationsContext from './auth/locationContext';
 import UsernameContext from './auth/usernameContext';
 import AppNavigator from './navigation/AppNavigator';
 import AuthNavigator from './navigation/AuthNavigator';
@@ -19,13 +21,20 @@ const forFade = ({ current }) => ({
 export default App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
-  // console.log('user', user);
+  const [locations, setLocations] = useState([]);
+  // console.log('location', locations);
 
   useEffect(() => {
     (async () => {
       setUser(await cache.get('user', 43200));
     })();
-  }, [setUser, cache]);
+    (async () => {
+      const locationsObject = await locationsApi.getLocations();
+      const locationsArr = locationsObject.data;
+      // console.log('locationsObject', locationsArr);
+      setLocations(locationsArr);
+    })();
+  }, [setUser, cache, setLocations, locationsApi]);
   // const getUser = async () => {
   //   const response = await cache.get('user', 43200);
   //   if (response) return setUser(response);
@@ -34,11 +43,13 @@ export default App = () => {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <UsernameContext.Provider value={{ username, setUsername }}>
-        <NavigationContainer>
-          {user ? <AppNavigator /> : <AuthNavigator setUser={setUser} />}
-          {/* <AppNavigator /> */}
-          {/* <AuthNavigator /> */}
-        </NavigationContainer>
+        <LocationsContext.Provider value={{ locations }}>
+          <NavigationContainer>
+            {user ? <AppNavigator /> : <AuthNavigator setUser={setUser} />}
+            {/* <AppNavigator /> */}
+            {/* <AuthNavigator /> */}
+          </NavigationContainer>
+        </LocationsContext.Provider>
       </UsernameContext.Provider>
     </AuthContext.Provider>
   );

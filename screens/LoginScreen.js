@@ -7,7 +7,7 @@ import {
   ErrorMessage,
   Form,
   FormField,
-  SubmitButton
+  SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
 import cache from '../utility/cache';
@@ -35,7 +35,7 @@ function LoginScreen(props) {
 
   return (
     <Screen style={styles.container}>
-      <Image style={styles.logo} source={require('../assets/logo.png')} />
+      <Image style={styles.logo} source={require('../assets/logo-new.png')} />
 
       <Form
         initialValues={{ email: '', password: '' }}

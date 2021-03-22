@@ -5,5 +5,6 @@ export default Object.freeze({
   MESSAGES: 'Messages',
   REGISTER: 'Register',
   MYLEAPS: 'My Leaps',
+  FAVORITELEAPS: 'Favourite Leaps',
   LEAPS_OF_USER: 'Leaps of User',
 });

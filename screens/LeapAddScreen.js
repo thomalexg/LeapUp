@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import categoriesApi from '../api/categories';
 import leapsApi from '../api/leaps';
 import AuthContext from '../auth/context';
+import LocationsContext from '../auth/locationContext';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {
   Form,
@@ -12,6 +13,7 @@ import {
   SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
+import SearchbarDropdown from '../components/SearchbarDropdown';
 import UploadScreen from './UploadScreen';
 
 const validationSchema = Yup.object().shape({
@@ -22,6 +24,11 @@ const validationSchema = Yup.object().shape({
 
 function LeapAddScreen() {
   const authContext = useContext(AuthContext);
+  const locationsContext = useContext(LocationsContext);
+  // const [stadt, setStadt] = useContext('');
+  // console.log('locationsContext:', locationsContext);
+  const locations = locationsContext.locations;
+  // console.log('locations:', locations);
   // console.log('ADDScreen user', authContext.user);
   const user = authContext.user;
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -70,6 +77,12 @@ function LeapAddScreen() {
       >
         {/* {console.log('categories', categories)} */}
         <FormField maxLength={255} name="title" placeholder="Title" />
+        <SearchbarDropdown
+          name="location"
+          numberOfColumns={1}
+          items={locations}
+          // setStadt={setStadt}
+        />
         <Picker
           items={categories}
           name="category"
