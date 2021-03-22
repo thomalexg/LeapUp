@@ -1,9 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFormikContext } from 'formik';
 import React, { useContext, useState } from 'react';
 import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import LocationsContext from '../auth/locationContext';
 import defaultStyles from '../config/styles';
+import { ErrorMessage } from './forms';
 import ListDropdown from './lists/ListDropdown';
 
 function SearchbarDropdown({
@@ -11,7 +13,10 @@ function SearchbarDropdown({
   width = '100%',
   items,
   numberOfColumns = 1,
+  name,
 }) {
+  const { setFieldValue, errors, touched } = useFormikContext();
+
   const locationsContext = useContext(LocationsContext);
   const locations = locationsContext.locations;
   const [isSearching, setIsSearching] = useState(false);
@@ -58,15 +63,20 @@ function SearchbarDropdown({
             keyExtractor={(item) => item.id.toString()}
             numColumns={numberOfColumns}
             renderItem={(item) => (
-              <TouchableHighlight onPress={() => setCity(item.item.city)}>
-                <ListDropdown
-                  item={item}
-                />
+              <TouchableHighlight
+                onPress={() => {
+                  console.log('item.item', item.item);
+                  setCity(item.item.city);
+                  setFieldValue('location', item.item.id);
+                }}
+              >
+                <ListDropdown item={item} />
               </TouchableHighlight>
             )}
           />
         </View>
       )}
+      <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   );
 }

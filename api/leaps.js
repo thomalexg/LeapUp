@@ -8,6 +8,7 @@ export const addLeap = (leap, user, onUploadProgress) => {
     endpoint,
     {
       title: leap.title,
+      location: leap.location,
       category_id: leap.category.value,
       description: leap.description,
       user_id: user.value.id,

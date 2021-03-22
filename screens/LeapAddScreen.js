@@ -10,7 +10,7 @@ import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton,
+  SubmitButton
 } from '../components/forms';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
@@ -18,7 +18,8 @@ import UploadScreen from './UploadScreen';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
-  description: Yup.string().label('Description'),
+  location: Yup.number().required().label('location'),
+  description: Yup.string().required().label('Description'),
   category: Yup.object().required().nullable().label('Category'),
 });
 
@@ -28,7 +29,7 @@ function LeapAddScreen() {
   // const [stadt, setStadt] = useContext('');
   // console.log('locationsContext:', locationsContext);
   const locations = locationsContext.locations;
-  // console.log('locations:', locations);
+  console.log('locations:', locations);
   // console.log('ADDScreen user', authContext.user);
   const user = authContext.user;
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -46,6 +47,7 @@ function LeapAddScreen() {
 
   const handleSubmit = async (leap, { resetForm }) => {
     // console.log('userAdd', user);
+    console.log('leap', leap);
     setProgress(0);
     setUploadVisible(true);
     const result = await leapsApi.addLeap(leap, user, (progress) =>
@@ -69,6 +71,7 @@ function LeapAddScreen() {
       <Form
         initialValues={{
           title: '',
+          location: '',
           description: '',
           category: null,
         }}
