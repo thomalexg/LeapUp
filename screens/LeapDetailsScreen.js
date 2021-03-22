@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import favoriteApi from '../api/saveLeapAsFavorite';
 import AuthContext from '../auth/context';
+import LocationsContext from '../auth/locationContext';
 import UsernameContext from '../auth/usernameContext';
 import Icon from '../components/Icon';
 import ListItem from '../components/lists/ListItem';
@@ -13,7 +14,14 @@ import routes from '../navigation/routes';
 function LeapDetailsScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
   const usernameContext = useContext(UsernameContext);
+  const locationsContext = useContext(LocationsContext);
+  const locations = locationsContext.locations;
   const listing = route.params;
+  const location = locations.filter(
+    (location) => location.id === listing.locationId,
+  )[0];
+  console.log(location);
+  console.log('listing', listing);
   return (
     <Screen>
       <View style={styles.icon}>
@@ -56,6 +64,14 @@ function LeapDetailsScreen({ route, navigation }) {
                 usernameContext.setUsername(listing.username);
                 navigation.navigate(routes.LEAPS_OF_USER);
               }}
+            />
+            <ListItem
+              // image={require('../assets/thomas.jpg')}
+              title={location.city || 'No location available'}
+              // subTitle="3 Leaps"
+              IconComponent={
+                <Icon name="city-variant" backgroundColor={colors.secondary} />
+              }
             />
           </View>
         </View>

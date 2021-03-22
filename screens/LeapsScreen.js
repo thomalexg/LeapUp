@@ -1,11 +1,14 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, Modal, StyleSheet, View } from 'react-native';
 // import { FlatList } from 'react-native-gesture-handler';
 import leapsApi from '../api/leaps';
 import AuthContext from '../auth/context';
 import ActivityIndicator from '../components/ActivityIndicator';
+import AppButton from '../components/Button';
 import Card from '../components/Card';
+import CategoryPickerItem from '../components/CategoryPickerItem';
+import FilterPicker from '../components/filter/FilterPicker';
 import FilterButton from '../components/FilterButton';
 import Screen from '../components/Screen';
 import AppText from '../components/Text';
@@ -20,11 +23,19 @@ function LeapsScreen({ navigation }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [categories, setCategories] = useState([]);
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
 
   useEffect(() => {
     loadLeaps();
+    const categorieFunc = async () => {
+      const getCategories = await categoriesApi.getCategories();
+      // console.log('The categories should be here:', getCategories.data);
+      setCategories(getCategories.data);
+    };
+    categorieFunc();
   }, []);
 
   const loadLeaps = async () => {
@@ -60,7 +71,11 @@ function LeapsScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <View>
-        <FilterButton title="filter" color="third" />
+        <FilterButton
+          title="filter"
+          color="third"
+          onPress={() => setModalVisible(true)}
+        />
       </View>
       {error && (
         <>
@@ -86,6 +101,23 @@ function LeapsScreen({ navigation }) {
           />
         )}
       />
+      <Modal visible={modalVisible} animationType="slide">
+        <Screen>
+          <AppButton title="Close" onPress={() => setModalVisible(false)} />
+          <FilterPicker
+            items={categories}
+            name="category"
+            numberOfColumns={3}
+            PickerItemComponent={CategoryPickerItem}
+            placeholder="Category"
+            width="50%"
+          />
+          <AppButton
+            title="Reset Filter"
+            onPress={() => console.log('delete filters')}
+          />
+        </Screen>
+      </Modal>
     </Screen>
   );
 }

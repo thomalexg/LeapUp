@@ -10,7 +10,7 @@ import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton
+  SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
@@ -18,7 +18,7 @@ import UploadScreen from './UploadScreen';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
-  location: Yup.number().required().label('location'),
+  location: Yup.number().required().label('Location'),
   description: Yup.string().required().label('Description'),
   category: Yup.object().required().nullable().label('Category'),
 });
@@ -59,6 +59,7 @@ function LeapAddScreen() {
       return alert('Could not add new leap :(');
     }
     resetForm();
+    navigation.navigate('Leaps');
   };
 
   return (
