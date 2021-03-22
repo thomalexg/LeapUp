@@ -1,16 +1,19 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, Modal, StyleSheet, View } from 'react-native';
+import categoriesApi from '../api/categories';
 // import { FlatList } from 'react-native-gesture-handler';
 import leapsApi from '../api/leaps';
 import AuthContext from '../auth/context';
+import LocationsContext from '../auth/locationContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import Card from '../components/Card';
 import CategoryPickerItem from '../components/CategoryPickerItem';
-import FilterPicker from '../components/filter/FilterPicker';
 import FilterButton from '../components/FilterButton';
+import { Form, FormPicker, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
+import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
@@ -25,6 +28,8 @@ function LeapsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [categories, setCategories] = useState([]);
+  const locationsContext = useContext(LocationsContext);
+  const locations = locationsContext.locations;
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
 
@@ -37,6 +42,10 @@ function LeapsScreen({ navigation }) {
     };
     categorieFunc();
   }, []);
+
+  const handleSubmit = () => {
+    console.log(handleSubmit);
+  };
 
   const loadLeaps = async () => {
     setLoading(true);
@@ -104,14 +113,29 @@ function LeapsScreen({ navigation }) {
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
           <AppButton title="Close" onPress={() => setModalVisible(false)} />
-          <FilterPicker
-            items={categories}
-            name="category"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Category"
-            width="50%"
-          />
+          <Form
+            initialValues={{
+              category: null,
+              location: '',
+            }}
+            onSubmit={handleSubmit}
+          >
+            <FormPicker
+              items={categories}
+              name="category"
+              numberOfColumns={3}
+              PickerItemComponent={CategoryPickerItem}
+              placeholder="Category"
+              width="50%"
+            />
+            <SearchbarDropdown
+              name="location"
+              numberOfColumns={1}
+              items={locations}
+              // setStadt={setStadt}
+            />
+            <SubmitButton title="Apply Filter" />
+          </Form>
           <AppButton
             title="Reset Filter"
             onPress={() => console.log('delete filters')}
