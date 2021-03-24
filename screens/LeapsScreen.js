@@ -48,11 +48,15 @@ function LeapsScreen({ navigation }) {
     categorieFunc();
   }, []);
 
-  const handleSubmit = (filter) => {
+  const handleSubmit = async (filter) => {
     console.log('filter', filter);
     setModalVisible(false);
-    setFilterCategory(filter.category !== '' ? filter.category : undefined);
-    setFilterLocation(filter.location ? filter.location : undefined);
+    await setFilterCategory(
+      filter.category !== '' ? filter.category : undefined,
+    );
+    await setFilterLocation(
+      filter.location !== '' ? filter.location : undefined,
+    );
     loadLeaps();
   };
 
@@ -62,8 +66,8 @@ function LeapsScreen({ navigation }) {
     console.log('category:', filterCategory);
     // const response = await leapsApi.getLeaps();
     const response = await getLeapsApi.getfilteredleaps(
-      filterCategory.id,
-      filterLocation.id,
+      filterCategory?.id,
+      filterLocation?.id,
     );
     // console.log('response of leaps', response.data.errors);
     setLoading(false);
@@ -147,7 +151,11 @@ function LeapsScreen({ navigation }) {
       />
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
-          <AppButton title="Close" onPress={() => setModalVisible(false)} />
+          <AppButton
+            title="Close"
+            color="third"
+            onPress={() => setModalVisible(false)}
+          />
           <Form
             initialValues={{
               category: filterCategory,
@@ -161,7 +169,9 @@ function LeapsScreen({ navigation }) {
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
               placeholder={
-                filterCategory === '' ? 'Category' : filterCategory.category
+                filterCategory === '' || filterCategory === undefined
+                  ? 'Category'
+                  : filterCategory.category
               }
               width="50%"
             />
@@ -170,7 +180,7 @@ function LeapsScreen({ navigation }) {
               numberOfColumns={1}
               items={locations}
               placeholder={
-                filterLocation === ''
+                filterLocation === '' || filterLocation === undefined
                   ? 'Search for your location'
                   : filterLocation.city
               }
@@ -182,6 +192,7 @@ function LeapsScreen({ navigation }) {
 
           <AppButton
             title="Reset Filter"
+            color="third"
             onPress={() => {
               setFilterCategory('');
               setFilterLocation('');

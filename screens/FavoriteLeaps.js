@@ -1,7 +1,7 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import deleteLeapApi from '../api/deleteLeap';
+import deleteFavoriteLeapApi from '../api/deleteFavoriteLeap';
 // import { FlatList } from 'react-native-gesture-handler';
 import getFavoriteLeapsApi from '../api/getFavoriteLeaps';
 import logoutApi from '../api/logout';
@@ -64,7 +64,10 @@ function LeapsScreen({ navigation }) {
 
   const handleDelete = async (item) => {
     // console.log('item', item);
-    await deleteLeapApi.deleteLeap(item);
+    await deleteFavoriteLeapApi.deleteFavoriteLeap(
+      item,
+      authContext.user.value,
+    );
     loadLeaps();
   };
 

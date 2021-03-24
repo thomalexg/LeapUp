@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import colors from '../config/colors';
 import LeapAddScreen from '../screens/LeapAddScreen';
 import AccountNavigator from './AccountNavigator';
 import FeedNavigator from './FeedNavigator';
@@ -10,7 +11,11 @@ import routes from './routes';
 const Tab = createBottomTabNavigator();
 
 export default AppNavigator = () => (
-  <Tab.Navigator>
+  <Tab.Navigator
+    tabBarOptions={{
+      activeTintColor: colors.secondary,
+    }}
+  >
     <Tab.Screen
       name="Leaps"
       component={FeedNavigator}
