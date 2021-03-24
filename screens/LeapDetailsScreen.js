@@ -55,6 +55,7 @@ function LeapDetailsScreen({ route, navigation }) {
           <View style={styles.userContainer}>
             <ListItem
               // image={require('../assets/thomas.jpg')}
+              showIcon={true}
               title={listing.username || 'No username available'}
               // subTitle="3 Leaps"
               IconComponent={
@@ -67,6 +68,7 @@ function LeapDetailsScreen({ route, navigation }) {
             />
             <ListItem
               // image={require('../assets/thomas.jpg')}
+              showIcon={false}
               title={location.city || 'No location available'}
               // subTitle="3 Leaps"
               IconComponent={

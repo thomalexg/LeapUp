@@ -61,6 +61,7 @@ function AccountScreen({ navigation }) {
           ItemSeparatorComponent={ListItemSeparator}
           renderItem={({ item }) => (
             <ListItem
+              showIcon={true}
               title={item.title}
               IconComponent={
                 <Icon
@@ -75,6 +76,7 @@ function AccountScreen({ navigation }) {
         />
       </View>
       <ListItem
+        showIcon={true}
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
         onPress={async () => {
