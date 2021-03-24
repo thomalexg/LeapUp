@@ -1,6 +1,7 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, Modal, StyleSheet, View } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import categoriesApi from '../api/categories';
 // import { FlatList } from 'react-native-gesture-handler';
@@ -12,8 +13,8 @@ import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import Card from '../components/Card';
 import CategoryPickerItem from '../components/CategoryPickerItem';
-import FilterButton from '../components/FilterButton';
 import { Form, FormPicker as Picker, SubmitButton } from '../components/forms';
+import Icon from '../components/Icon';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
@@ -93,13 +94,33 @@ function LeapsScreen({ navigation }) {
 
   return (
     <Screen style={styles.screen}>
-      <View>
+      <View style={styles.icon}>
+        <TouchableHighlight
+          underlayColor={colors.light}
+          onPress={() => {
+            setModalVisible(true);
+          }}
+
+          // onPress={() => alert('Pressed')}
+        >
+          <View>
+            {/* <Text>Button</Text> */}
+            <Icon
+              name="filter"
+              backgroundColor={colors.secondary}
+              size={60}
+              // onPress={() => alert('Pressed')}
+            />
+          </View>
+        </TouchableHighlight>
+      </View>
+      {/* <View>
         <FilterButton
           title="filter"
           color="third"
           onPress={() => setModalVisible(true)}
         />
-      </View>
+      </View> */}
       {error && (
         <>
           <AppText>Couldn´t retrieve the leaps</AppText>
@@ -178,6 +199,12 @@ const styles = StyleSheet.create({
   screen: {
     padding: 20,
     backgroundColor: colors.light,
+  },
+  icon: {
+    zIndex: 3,
+    position: 'absolute',
+    bottom: 0,
+    right: 10,
   },
 });
 
