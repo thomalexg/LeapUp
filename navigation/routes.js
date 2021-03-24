@@ -7,4 +7,7 @@ export default Object.freeze({
   MYLEAPS: 'My Leaps',
   LEAPS_OF_USER: 'Leaps of User',
   FAVORITELEAPS: 'Favourite Leaps',
+  SETTINGS: 'Settings',
+  PASSWORD: 'Password',
+  EMAIL: 'Email'
 });

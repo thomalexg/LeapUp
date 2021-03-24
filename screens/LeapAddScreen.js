@@ -18,7 +18,7 @@ import UploadScreen from './UploadScreen';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
-  location: Yup.number().required().label('Location'),
+  location: Yup.object().required().label('Location'),
   description: Yup.string().required().label('Description'),
   category: Yup.object().required().nullable().label('Category'),
 });
@@ -46,6 +46,7 @@ function LeapAddScreen() {
   }, []);
 
   const handleSubmit = async (leap, { resetForm }) => {
+    console.log('leapAdd', leap);
     // console.log('userAdd', user);
     console.log('leap', leap);
     setProgress(0);
@@ -84,6 +85,7 @@ function LeapAddScreen() {
           name="location"
           numberOfColumns={1}
           items={locations}
+          placeholder="Search for your location"
           // onBlur={() => setIsSearching(false)}
           // setStadt={setStadt}
         />

@@ -1,8 +1,12 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Modal, StyleSheet, View } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import categoriesApi from '../api/categories';
 // import { FlatList } from 'react-native-gesture-handler';
 // import leapsApi from '../api/leaps';
@@ -11,16 +15,18 @@ import AuthContext from '../auth/context';
 import LocationsContext from '../auth/locationContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
-import Card from '../components/Card';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import { Form, FormPicker as Picker, SubmitButton } from '../components/forms';
 import Icon from '../components/Icon';
+import { ListItem } from '../components/lists';
+import LeapItemSeparator from '../components/lists/LeapItemSeparator';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
 import cache from '../utility/cache';
+
 // import {useNetInfo} from 'react-native-community/netinfo';
 
 function LeapsScreen({ navigation }) {
@@ -46,18 +52,13 @@ function LeapsScreen({ navigation }) {
       setCategories(getCategories.data);
     };
     categorieFunc();
-  }, []);
+  }, [filterCategory, filterLocation]);
 
-  const handleSubmit = async (filter) => {
+  const handleSubmit = (filter) => {
     console.log('filter', filter);
     setModalVisible(false);
-    await setFilterCategory(
-      filter.category !== '' ? filter.category : undefined,
-    );
-    await setFilterLocation(
-      filter.location !== '' ? filter.location : undefined,
-    );
-    loadLeaps();
+    setFilterCategory(filter.category !== '' ? filter.category : undefined);
+    setFilterLocation(filter.location !== '' ? filter.location : undefined);
   };
 
   const loadLeaps = async () => {
@@ -99,7 +100,7 @@ function LeapsScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.icon}>
-        <TouchableHighlight
+        <TouchableWithoutFeedback
           underlayColor={colors.light}
           onPress={() => {
             setModalVisible(true);
@@ -116,7 +117,7 @@ function LeapsScreen({ navigation }) {
               // onPress={() => alert('Pressed')}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableWithoutFeedback>
       </View>
       {/* <View>
         <FilterButton
@@ -141,13 +142,22 @@ function LeapsScreen({ navigation }) {
         data={leaps.sort((a, b) => a.id < b.id)}
         keyExtractor={(leaps) => leaps.id.toString()}
         renderItem={({ item }) => (
-          <Card
+          <ListItem
+            showIcon={true}
+            style={styles.list}
             title={item.title}
             subTitle={item.description}
-            // image={leap.image}
             onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
+            // IconComponent={<Icon name={item.category}/>}
           />
+          // <Card
+          //   title={item.title}
+          //   subTitle={item.description}
+          //   // image={leap.image}
+          //   onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
+          // />
         )}
+        ItemSeparatorComponent={LeapItemSeparator}
       />
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
@@ -208,14 +218,19 @@ function LeapsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
+    paddingTop: 30,
     backgroundColor: colors.light,
   },
   icon: {
     zIndex: 3,
     position: 'absolute',
-    bottom: 0,
+    bottom: 5,
     right: 10,
+    opacity: 0.9,
+  },
+  list: {
+    borderStyle: 'solid',
+    borderBottomColor: 'black',
   },
 });
 

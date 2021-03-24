@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import logoutApi from '../api/logout';
 import AuthContext from '../auth/context';
 import Icon from '../components/Icon';
 import { ListItem, ListItemSeparator } from '../components/lists';
@@ -11,28 +10,20 @@ import cache from '../utility/cache';
 
 const menuItems = [
   {
-    title: 'My Leaps',
+    title: 'Change Password',
     icon: {
-      name: 'format-list-bulleted',
-      backgroundColor: colors.primary,
+      name: 'lock-alert',
+      backgroundColor: colors.third,
     },
-    targetScreen: routes.MYLEAPS,
+    targetScreen: routes.PASSWORD,
   },
   {
-    title: 'Favourites',
-    icon: {
-      name: 'star',
-      backgroundColor: 'gold',
-    },
-    targetScreen: routes.FAVORITELEAPS,
-  },
-  {
-    title: 'My Messages',
+    title: 'Change Email',
     icon: {
       name: 'email',
       backgroundColor: colors.secondary,
     },
-    targetScreen: routes.MESSAGES,
+    targetScreen: routes.EMAIL,
   },
 ];
 
@@ -46,16 +37,6 @@ function AccountScreen({ navigation }) {
   }, [authContext.setUser, cache]);
   return (
     <Screen style={styles.screen}>
-      <View style={styles.container}>
-        <ListItem
-          showIcon={true}
-          title={authContext?.user.value.username || username}
-          subTitle={authContext?.user.value.email || email}
-          // image={require('../assets/thomas.jpg')}
-          IconComponent={<Icon name="account" backgroundColor={colors.third} />}
-          onPress={() => navigation.navigate(routes.SETTINGS)}
-        />
-      </View>
       <View style={styles.container}>
         <FlatList
           data={menuItems}
@@ -77,17 +58,6 @@ function AccountScreen({ navigation }) {
           )}
         />
       </View>
-      <ListItem
-        showIcon={true}
-        title="Log Out"
-        IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
-        onPress={async () => {
-          const deletedUser = await cache.deleteUser('user');
-          console.log('deleteduser', deletedUser);
-          authContext.setUser(deletedUser);
-          await logoutApi.logout();
-        }}
-      />
     </Screen>
   );
 }

@@ -8,8 +8,8 @@ import myLeapsApi from '../api/myLeaps';
 import AuthContext from '../auth/context';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
-import Card from '../components/Card';
-import { ListItemDeleteAction } from '../components/lists';
+import { ListItem, ListItemDeleteAction } from '../components/lists';
+import LeapItemSeparator from '../components/lists/LeapItemSeparator';
 import Screen from '../components/Screen';
 import AppText from '../components/Text';
 import colors from '../config/colors';
@@ -85,14 +85,19 @@ function LeapsScreen({ navigation }) {
         data={leaps.sort((a, b) => a.id < b.id)}
         keyExtractor={(leaps) => leaps.id.toString()}
         renderItem={({ item }) => (
-          <Card
+          <ListItem
+            showIcon={true}
+            style={styles.list}
             title={item.title}
             subTitle={item.description}
-            // image={leap.image}
             onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
             renderRightActions={() => (
-              <ListItemDeleteAction onPress={() => handleDelete(item)} />
+              <ListItemDeleteAction
+                style={{ marginBottom: 10, borderRadius: 25 }}
+                onPress={() => handleDelete(item)}
+              />
             )}
+            ItemSeparatorComponent={LeapItemSeparator}
           />
         )}
       />
@@ -102,7 +107,7 @@ function LeapsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
+    paddingTop: 10,
     backgroundColor: colors.light,
   },
 });
