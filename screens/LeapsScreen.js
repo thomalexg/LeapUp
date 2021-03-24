@@ -1,9 +1,11 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, Modal, StyleSheet, View } from 'react-native';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 import categoriesApi from '../api/categories';
 // import { FlatList } from 'react-native-gesture-handler';
-import leapsApi from '../api/leaps';
+// import leapsApi from '../api/leaps';
+import getLeapsApi from '../api/getLeaps';
 import AuthContext from '../auth/context';
 import LocationsContext from '../auth/locationContext';
 import ActivityIndicator from '../components/ActivityIndicator';
@@ -11,7 +13,7 @@ import AppButton from '../components/Button';
 import Card from '../components/Card';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import FilterButton from '../components/FilterButton';
-import { Form, FormPicker, SubmitButton } from '../components/forms';
+import { Form, FormPicker as Picker, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
@@ -28,6 +30,8 @@ function LeapsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [filterLocation, setFilterLocation] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
   const locationsContext = useContext(LocationsContext);
   const locations = locationsContext.locations;
   // console.log('leaps', leaps[0]);
@@ -43,13 +47,23 @@ function LeapsScreen({ navigation }) {
     categorieFunc();
   }, []);
 
-  const handleSubmit = () => {
-    console.log(handleSubmit);
+  const handleSubmit = (filter) => {
+    console.log('filter', filter);
+    setModalVisible(false);
+    setFilterCategory(filter.category ? filter.category : undefined);
+    setFilterLocation(filter.location);
+    loadLeaps();
   };
 
   const loadLeaps = async () => {
     setLoading(true);
-    const response = await leapsApi.getLeaps();
+    console.log('location:', filterLocation);
+    console.log('category:', filterCategory);
+    // const response = await leapsApi.getLeaps();
+    const response = await getLeapsApi.getfilteredleaps(
+      filterCategory.id,
+      filterLocation.id,
+    );
     // console.log('response of leaps', response.data.errors);
     setLoading(false);
 
@@ -115,30 +129,39 @@ function LeapsScreen({ navigation }) {
           <AppButton title="Close" onPress={() => setModalVisible(false)} />
           <Form
             initialValues={{
-              category: null,
-              location: '',
+              category: filterCategory,
+              location: filterLocation,
             }}
             onSubmit={handleSubmit}
           >
-            <FormPicker
+            <Picker
               items={categories}
               name="category"
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
-              placeholder="Category"
+              placeholder={
+                filterCategory === '' ? 'Category' : filterCategory.category
+              }
               width="50%"
             />
             <SearchbarDropdown
-              name="location"
+              name={filterLocation === '' ? 'location' : filterLocation.city}
               numberOfColumns={1}
               items={locations}
               // setStadt={setStadt}
             />
+
             <SubmitButton title="Apply Filter" />
           </Form>
+
           <AppButton
             title="Reset Filter"
-            onPress={() => console.log('delete filters')}
+            onPress={() => {
+              setFilterCategory('');
+              setFilterLocation('');
+              loadLeaps();
+              setModalVisible(false);
+            }}
           />
         </Screen>
       </Modal>

@@ -79,12 +79,12 @@ function LeapAddScreen() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {/* {console.log('categories', categories)} */}
         <FormField maxLength={255} name="title" placeholder="Title" />
         <SearchbarDropdown
           name="location"
           numberOfColumns={1}
           items={locations}
+          // onBlur={() => setIsSearching(false)}
           // setStadt={setStadt}
         />
         <Picker

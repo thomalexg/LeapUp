@@ -1,8 +1,13 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFormikContext } from 'formik';
 import React, { useContext, useState } from 'react';
-import { FlatList, StyleSheet, TextInput, View } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import {
+  FlatList,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import LocationsContext from '../auth/locationContext';
 import defaultStyles from '../config/styles';
 import { ErrorMessage } from './forms';
@@ -14,11 +19,13 @@ function SearchbarDropdown({
   items,
   numberOfColumns = 1,
   name,
+  onBlur,
 }) {
   const { setFieldValue, errors, touched } = useFormikContext();
 
   const locationsContext = useContext(LocationsContext);
   const locations = locationsContext.locations;
+
   const [isSearching, setIsSearching] = useState(false);
   const [search, setSearch] = useState('');
   const [filteredLocations, setFilteredLocations] = useState(items);
@@ -48,30 +55,35 @@ function SearchbarDropdown({
             style={styles.icon}
           />
         )}
+
         <TextInput
           style={[defaultStyles.text]}
           placeholder="Search for your location"
           onChangeText={onSearch}
           value={city}
-          onBlur={() => setIsSearching(false)}
+          // onBlur={() => setIsSearching(false)}
+          onBlur={onBlur}
         />
       </View>
       {isSearching && (
         <View style={styles.list}>
           <FlatList
             data={filteredLocations}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => '?' + item.id.toString()}
             numColumns={numberOfColumns}
             renderItem={(item) => (
-              <TouchableHighlight
-                onPress={() => {
-                  console.log('item.item', item.item);
-                  setCity(item.item.city);
-                  setFieldValue('location', item.item.id);
-                }}
-              >
-                <ListDropdown item={item} />
-              </TouchableHighlight>
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('item.item', item.item);
+                    setCity(item.item.city);
+                    setFieldValue('location', item.item.id);
+                    setIsSearching(false);
+                  }}
+                >
+                  <ListDropdown item={item} />
+                </TouchableOpacity>
+              </View>
             )}
           />
         </View>
@@ -95,6 +107,8 @@ const styles = StyleSheet.create({
   textInput: {},
   list: {
     backgroundColor: 'whitesmoke',
+    position: 'relative',
+    zIndex: 11,
   },
 });
 

@@ -6,7 +6,7 @@ import {
   Modal,
   StyleSheet,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native';
 import defaultStyles from '../config/styles';
 import PickerItem from './PickerItem';
@@ -52,6 +52,11 @@ function AppPicker({
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
+          {/* <View>
+            <Pressable onPress={() => console.log('pressed')}>
+              <Text>Press me</Text>
+            </Pressable>
+          </View> */}
           <Button title="Close" onPress={() => setModalVisible(false)} />
           <FlatList
             data={items}
