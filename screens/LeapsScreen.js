@@ -50,8 +50,8 @@ function LeapsScreen({ navigation }) {
   const handleSubmit = (filter) => {
     console.log('filter', filter);
     setModalVisible(false);
-    setFilterCategory(filter.category ? filter.category : undefined);
-    setFilterLocation(filter.location);
+    setFilterCategory(filter.category !== '' ? filter.category : undefined);
+    setFilterLocation(filter.location ? filter.location : undefined);
     loadLeaps();
   };
 
@@ -145,9 +145,14 @@ function LeapsScreen({ navigation }) {
               width="50%"
             />
             <SearchbarDropdown
-              name={filterLocation === '' ? 'location' : filterLocation.city}
+              name="location"
               numberOfColumns={1}
               items={locations}
+              placeholder={
+                filterLocation === ''
+                  ? 'Search for your location'
+                  : filterLocation.city
+              }
               // setStadt={setStadt}
             />
 

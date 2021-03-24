@@ -19,7 +19,7 @@ function SearchbarDropdown({
   items,
   numberOfColumns = 1,
   name,
-  onBlur,
+  placeholder,
 }) {
   const { setFieldValue, errors, touched } = useFormikContext();
 
@@ -58,11 +58,11 @@ function SearchbarDropdown({
 
         <TextInput
           style={[defaultStyles.text]}
-          placeholder="Search for your location"
+          placeholder={placeholder}
           onChangeText={onSearch}
           value={city}
           // onBlur={() => setIsSearching(false)}
-          onBlur={onBlur}
+          // onBlur={onBlur}
         />
       </View>
       {isSearching && (
@@ -77,7 +77,7 @@ function SearchbarDropdown({
                   onPress={() => {
                     console.log('item.item', item.item);
                     setCity(item.item.city);
-                    setFieldValue('location', item.item.id);
+                    setFieldValue('location', item.item);
                     setIsSearching(false);
                   }}
                 >
