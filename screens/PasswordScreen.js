@@ -9,11 +9,11 @@ import cache from '../utility/cache';
 import UploadScreen from './UploadScreen';
 
 const validationSchema = Yup.object().shape({
-  password1: Yup.string().required().min(4).label('Password1'),
-  password2: Yup.string().oneOf(
-    [Yup.ref('password1'), null],
-    'Passwords must match',
-  ),
+  password1: Yup.string().required().min(4).max(64).label('Password'),
+  password2: Yup.string()
+    .required()
+    .oneOf([Yup.ref('password1'), null], 'Passwords must match')
+    .label('Password'),
 });
 
 function LeapAddScreen() {

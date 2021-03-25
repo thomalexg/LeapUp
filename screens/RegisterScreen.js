@@ -13,34 +13,19 @@ import Screen from '../components/Screen';
 import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required().min(4).label('Username'),
+  username: Yup.string().required().min(4).max(20).label('Username'),
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
+  password1: Yup.string()
+    .required()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .label('Password'),
 });
 
 function RegisterScreen() {
   const authContext = useContext(AuthContext);
   const [authNotification, setAuthNotification] = useState(false);
 
-  // useEffect(() => {
-  //   getSession();
-  // }, []);
-
-  // const getSession = async () => {
-  //   const cachedSession = await cache.get('session', 5);
-  //   const session =
-  //     cachedSession !== null ? cachedSession : await sessionApi.getSession();
-  //   if (!cachedSession) {
-  //     cache.store('session', session.data);
-  //   }
-
-  // This works
-  // const response = await sessionApi.getSession();
-  // console.log(response.data);
-  // cache.store('session', response.data);
-  // const storedSession = await cache.get('session');
-  // console.log('Cache:', storedSession);
-  // };
   const handleSubmit = async (user) => {
     setAuthNotification(false);
     const result = await registerApi.register(user);
@@ -64,6 +49,7 @@ function RegisterScreen() {
           username: '',
           email: '',
           password: '',
+          password1: '',
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -94,6 +80,15 @@ function RegisterScreen() {
           icon="lock"
           name="password"
           placeholder="Password"
+          secureTextEntry
+          textContentType="password"
+        />
+        <FormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="lock"
+          name="password1"
+          placeholder="Retype Password"
           secureTextEntry
           textContentType="password"
         />
