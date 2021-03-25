@@ -49,8 +49,8 @@ function AccountScreen({ navigation }) {
       <View style={styles.container}>
         <ListItem
           showIcon={true}
-          title={authContext?.user.value.username || username}
-          subTitle={authContext?.user.value.email || email}
+          title={authContext?.user?.value.username || 'No username'}
+          subTitle={authContext?.user?.value.email || 'No email'}
           // image={require('../assets/thomas.jpg')}
           IconComponent={<Icon name="account" backgroundColor={colors.third} />}
           onPress={() => navigation.navigate(routes.SETTINGS)}
@@ -84,8 +84,8 @@ function AccountScreen({ navigation }) {
         onPress={async () => {
           const deletedUser = await cache.deleteUser('user');
           console.log('deleteduser', deletedUser);
-          authContext.setUser(deletedUser);
           await logoutApi.logout();
+          authContext.setUser(deletedUser);
         }}
       />
     </Screen>

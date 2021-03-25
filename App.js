@@ -7,7 +7,9 @@ import AuthContext from './auth/context';
 import LocationsContext from './auth/locationContext';
 import UsernameContext from './auth/usernameContext';
 import AppNavigator from './navigation/AppNavigator';
-import AuthNavigator from './navigation/AuthNavigator';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
 import cache from './utility/cache';
 
 const Stack = createStackNavigator();
@@ -35,19 +37,37 @@ export default App = () => {
       setLocations(locationsArr);
     })();
   }, [setUser, cache, setLocations, locationsApi]);
-  // const getUser = async () => {
-  //   const response = await cache.get('user', 43200);
-  //   if (response) return setUser(response);
-  //   console.log(response);
-  // };
+  const getUser = async () => {
+    const response = await cache.get('user', 43200);
+    if (response) return setUser(response);
+    console.log(response);
+  };
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <UsernameContext.Provider value={{ username, setUsername }}>
         <LocationsContext.Provider value={{ locations }}>
           <NavigationContainer>
-            {user ? <AppNavigator /> : <AuthNavigator setUser={setUser} />}
-            {/* <AppNavigator /> */}
-            {/* <AuthNavigator /> */}
+            <Stack.Navigator>
+              {user ? (
+                //  <AppNavigator />
+                <Stack.Screen
+                  name="AppNavigator"
+                  component={AppNavigator}
+                  options={{ headerShown: false }}
+                />
+              ) : (
+                // <AuthNavigator setUser={setUser} />
+                <>
+                  <Stack.Screen
+                    name="Welcome"
+                    component={WelcomeScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="Register" component={RegisterScreen} />
+                </>
+              )}
+            </Stack.Navigator>
           </NavigationContainer>
         </LocationsContext.Provider>
       </UsernameContext.Provider>

@@ -44,6 +44,7 @@ function LeapsScreen({ navigation }) {
   const locations = locationsContext.locations;
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
+  let lastLoadedLeapId = '';
 
   useEffect(() => {
     loadLeaps();
@@ -88,7 +89,13 @@ function LeapsScreen({ navigation }) {
     }
 
     setError(false);
+    const alteredLeaps = response.data.map((leap) => ({
+      ...leap,
+      category: categories.find((category) => category.id === leap.category_id),
+    }));
     setLeaps(response.data);
+    lastLoadedLeapId = response.data.slice(-1)[0].id;
+    console.log('lastLoadedLeapId', lastLoadedLeapId);
   };
   if (!netInfo.isInternetReachable) {
     return (
@@ -140,7 +147,8 @@ function LeapsScreen({ navigation }) {
         onRefresh={() => {
           loadLeaps();
         }}
-        data={leaps.sort((a, b) => a.id < b.id)}
+        // data={leaps.sort((a, b) => a.id < b.id)}
+        data={leaps}
         keyExtractor={(leaps) => leaps.id.toString()}
         renderItem={({ item }) => (
           <ListItem

@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Yup from 'yup';
 import changePasswordApi from '../api/changePassword';
+import logoutApi from '../api/logout';
 import AuthContext from '../auth/context';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
@@ -39,8 +40,8 @@ function LeapAddScreen() {
       return alert('Could not change password :(');
     }
     const deletedUser = await cache.deleteUser('user');
-    authContext.setUser(deletedUser);
     await logoutApi.logout();
+    authContext.setUser(deletedUser);
     setUploadVisible(false);
     resetForm();
   };
