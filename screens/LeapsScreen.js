@@ -20,6 +20,7 @@ import { Form, FormPicker as Picker, SubmitButton } from '../components/forms';
 import Icon from '../components/Icon';
 import { ListItem } from '../components/lists';
 import LeapItemSeparator from '../components/lists/LeapItemSeparator';
+import ListFooterComponent from '../components/lists/ListFooterComponent';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
@@ -158,7 +159,9 @@ function LeapsScreen({ navigation }) {
           // />
         )}
         ItemSeparatorComponent={LeapItemSeparator}
+        ListFooterComponent={ListFooterComponent}
       />
+      {/* <View style={styles.bottom} /> */}
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
           <AppButton
@@ -224,13 +227,18 @@ const styles = StyleSheet.create({
   icon: {
     zIndex: 3,
     position: 'absolute',
-    bottom: 5,
+    bottom: 10,
     right: 10,
-    opacity: 0.9,
+    opacity: 1,
   },
   list: {
     borderStyle: 'solid',
     borderBottomColor: 'black',
+  },
+  bottom: {
+    width: '100%',
+    height: 300,
+    backgroundColor: colors.light,
   },
 });
 

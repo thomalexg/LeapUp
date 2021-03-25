@@ -62,7 +62,7 @@ function LeapAddScreen() {
           icon="email"
           keyboardType="email-address"
           name="email"
-          placeholder="Email"
+          placeholder="New Email"
           textContentType="emailAddress"
         />
 

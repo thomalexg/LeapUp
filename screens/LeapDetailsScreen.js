@@ -41,7 +41,7 @@ function LeapDetailsScreen({ route, navigation }) {
             {/* <Text>Button</Text> */}
             <Icon
               name="star"
-              backgroundColor="gold"
+              backgroundColor={colors.primary}
               // onPress={() => alert('Pressed')}
             />
           </View>
@@ -70,6 +70,15 @@ function LeapDetailsScreen({ route, navigation }) {
               // image={require('../assets/thomas.jpg')}
               showIcon={false}
               title={location?.city || 'No location available'}
+              // subTitle="3 Leaps"
+              IconComponent={
+                <Icon name="city-variant" backgroundColor={colors.secondary} />
+              }
+            />
+            <ListItem
+              // image={require('../assets/thomas.jpg')}
+              showIcon={false}
+              title={location.city || 'No location available'}
               // subTitle="3 Leaps"
               IconComponent={
                 <Icon name="city-variant" backgroundColor={colors.secondary} />

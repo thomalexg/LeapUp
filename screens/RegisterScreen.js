@@ -7,7 +7,7 @@ import {
   ErrorMessage,
   Form,
   FormField,
-  SubmitButton,
+  SubmitButton
 } from '../components/forms';
 import Screen from '../components/Screen';
 import cache from '../utility/cache';
@@ -88,7 +88,7 @@ function RegisterScreen() {
           autoCorrect={false}
           icon="lock"
           name="password1"
-          placeholder="Retype Password"
+          placeholder="Repeat Password"
           secureTextEntry
           textContentType="password"
         />

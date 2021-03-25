@@ -17,13 +17,13 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label('Password'),
 });
 
-function LoginScreen(props) {
+function LoginScreen() {
   const authContext = useContext(AuthContext);
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleSubmit = async (user) => {
     const result = await loginApi.login(user);
-    // console.log('result', result);
+    console.log('result', result);
     if (!result.ok) {
       return setLoginFailed(true);
     }

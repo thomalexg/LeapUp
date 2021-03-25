@@ -73,7 +73,7 @@ function LeapAddScreen() {
         <FormField
           maxLength={255}
           name="password2"
-          placeholder="Retype new Password"
+          placeholder="Repeat New Password"
           icon="lock"
           autoCapitalize="none"
           autoCorrect={false}
