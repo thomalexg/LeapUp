@@ -7,6 +7,7 @@ export const getfilteredleaps = (filterCategory, filterLocation) => {
   return client.post(endpoint, {
     category_id: filterCategory,
     location_id: filterLocation,
+    // lastLoadedLeap_id
   });
 };
 
