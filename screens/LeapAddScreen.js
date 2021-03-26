@@ -10,7 +10,7 @@ import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton,
+  SubmitButton
 } from '../components/forms';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
@@ -35,6 +35,7 @@ function LeapAddScreen() {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [deleteCity, setDeleteCity] = useState(false);
   // console.log('The categories', categories);
   useEffect(() => {
     const categorieFunc = async () => {
@@ -54,13 +55,14 @@ function LeapAddScreen() {
     const result = await leapsApi.addLeap(leap, user, (progress) =>
       setProgress(progress),
     );
+    setDeleteCity(true);
 
     if (!result) {
       setUploadVisible(false);
       return alert('Could not add new leap :(');
     }
     resetForm();
-    navigation.navigate('Leaps');
+    // navigation.navigate(routes.MYLEAPS);
   };
 
   return (
@@ -86,6 +88,7 @@ function LeapAddScreen() {
           numberOfColumns={1}
           items={locations}
           placeholder="Search for your location"
+
           // onBlur={() => setIsSearching(false)}
           // setStadt={setStadt}
         />

@@ -30,6 +30,7 @@ function SearchbarDropdown({
   const [search, setSearch] = useState('');
   const [filteredLocations, setFilteredLocations] = useState(items);
   const [city, setCity] = useState('');
+
   const onSearch = (value) => {
     setIsSearching(true);
     setCity(value);
