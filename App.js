@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
-import categoriesApi from '../api/categories';
+import categoriesApi from './api/categories';
 import locationsApi from './api/getLocations';
 import CategoriesContext from './auth/categoriesContext';
 import AuthContext from './auth/context';
@@ -31,17 +31,18 @@ export default App = () => {
 
   useEffect(() => {
     (async () => {
-      await setUser(await cache.get('user', 43200));
+      setUser(await cache.get('user', 43200));
     })();
     (async () => {
       const locationsObject = await locationsApi.getLocations();
       const locationsArr = locationsObject.data;
       // console.log('locationsObject', locationsArr);
       setLocations(locationsArr);
-      const categoriesObject = await categoriesApi.getCategories();
-      setCategories(categoriesObject.data);
+      const getCategories = await categoriesApi.getCategories();
+      // console.log('The categories should be here:', getCategories.data);
+      setCategories(getCategories.data);
     })();
-  }, [setUser, cache, setLocations, locationsApi, setCategories]);
+  }, [setUser, cache, setLocations, locationsApi]);
   const getUser = async () => {
     const response = await cache.get('user', 43200);
     if (response) return setUser(response);
@@ -51,8 +52,7 @@ export default App = () => {
     <AuthContext.Provider value={{ user, setUser }}>
       <UsernameContext.Provider value={{ username, setUsername }}>
         <LocationsContext.Provider value={{ locations }}>
-          <CategoriesContext.Provider value={{ categories, setCategories }}>
-            {' '}
+          <CategoriesContext.Provider value={{ categories }}>
             <NavigationContainer>
               <Stack.Navigator>
                 {user ? (

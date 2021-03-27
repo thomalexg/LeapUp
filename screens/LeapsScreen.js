@@ -8,8 +8,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-// import { FlatList } from 'react-native-gesture-handler';
-// import leapsApi from '../api/leaps';
 import getLeapsApi from '../api/getLeaps';
 import CategoriesContext from '../auth/categoriesContext';
 import AuthContext from '../auth/context';
@@ -38,7 +36,7 @@ function LeapsScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  // const [categories, setCategories] = useState([]);
+
   const [filterLocation, setFilterLocation] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const locationsContext = useContext(LocationsContext);
@@ -52,13 +50,13 @@ function LeapsScreen({ navigation }) {
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
+    loadLeaps();
     // const categorieFunc = async () => {
     //   const getCategories = await categoriesApi.getCategories();
     //   // console.log('The categories should be here:', getCategories.data);
     //   setCategories(getCategories.data);
     // };
     // categorieFunc();
-    loadLeaps();
   }, [filterCategory, filterLocation]);
 
   const handleSubmit = (filter) => {
@@ -218,6 +216,12 @@ function LeapsScreen({ navigation }) {
                 />
               }
             />
+            // <Card
+            //   title={item.title}
+            //   subTitle={item.description}
+            //   // image={leap.image}
+            //   onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
+            // />
           )}
           ItemSeparatorComponent={LeapItemSeparator}
           ListFooterComponent={ListFooterComponent}
@@ -230,7 +234,7 @@ function LeapsScreen({ navigation }) {
           }
         />
       </View>
-
+      {/* <View style={styles.bottom} /> */}
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
           <AppButton
