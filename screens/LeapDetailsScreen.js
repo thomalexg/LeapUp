@@ -78,12 +78,12 @@ function LeapDetailsScreen({ route, navigation }) {
             <ListItem
               // image={require('../assets/thomas.jpg')}
               showIcon={false}
-              title={listing.category.category || 'No category available'}
+              title={listing.category?.category || 'No category available'}
               // subTitle="3 Leaps"
               IconComponent={
                 <Icon
-                  name={listing.category.icon}
-                  backgroundColor={listing.category.backgroundColor}
+                  name={listing.category?.icon}
+                  backgroundColor={listing.category?.backgroundColor}
                 />
               }
             />
