@@ -78,10 +78,13 @@ function LeapDetailsScreen({ route, navigation }) {
             <ListItem
               // image={require('../assets/thomas.jpg')}
               showIcon={false}
-              title={location.city || 'No location available'}
+              title={listing.category.category || 'No category available'}
               // subTitle="3 Leaps"
               IconComponent={
-                <Icon name="city-variant" backgroundColor={colors.secondary} />
+                <Icon
+                  name={listing.category.icon}
+                  backgroundColor={listing.category.backgroundColor}
+                />
               }
             />
           </View>

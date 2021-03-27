@@ -100,7 +100,7 @@ function LeapsScreen({ navigation }) {
       const alteredLeaps = response.data.map((leap) => ({
         ...leap,
         category: categories.find(
-          (category) => category.id === leap.category_id,
+          (category) => category.id === leap.categoryId,
         ),
       }));
       console.log('oldLeaps', oldLeaps.length);
@@ -109,7 +109,30 @@ function LeapsScreen({ navigation }) {
       console.log('newLeaps', newLeaps.length);
       return setLeaps(newLeaps);
     }
-    setLeaps(response.data);
+    // setLeaps(
+    //   response.data.map((leap) => ({
+    //     ...leap,
+    //     category: categories.find(
+    //       (category) => category.id === leap.category_id,
+    //     ),
+    //   })),
+    // );
+    console.log(
+      response.data.map((leap) => ({
+        ...leap,
+        category: categories.find(
+          (category) => category.id === leap.categoryId,
+        ),
+      })),
+    );
+    setLeaps(
+      response.data.map((leap) => ({
+        ...leap,
+        category: categories.find(
+          (category) => category.id === leap.categoryId,
+        ),
+      })),
+    );
     // lastLoadedLeapId = response.data.slice(-1)[0].id;
     // console.log('response', response.data.slice(-1)[0].id);
     // setLastLoadedLeapId(response?.data?.slice(-1)[0]?.id || 1);
@@ -186,7 +209,12 @@ function LeapsScreen({ navigation }) {
               title={item.title}
               subTitle={item.description}
               onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
-              // IconComponent={<Icon name={item.category}/>}
+              IconComponent={
+                <Icon
+                  backgroundColor={item.category?.backgroundColor || 'blue'}
+                  name={item.category?.icon || 'error'}
+                />
+              }
             />
             // <Card
             //   title={item.title}
