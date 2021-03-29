@@ -9,7 +9,7 @@ function ListFooterComponent({ children }) {
 const styles = StyleSheet.create({
   separator: {
     width: '100%',
-    height: 40,
+    height: 70,
     backgroundColor: colors.light,
   },
 });

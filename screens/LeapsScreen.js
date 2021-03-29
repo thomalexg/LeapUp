@@ -216,15 +216,9 @@ function LeapsScreen({ navigation }) {
                 />
               }
             />
-            // <Card
-            //   title={item.title}
-            //   subTitle={item.description}
-            //   // image={leap.image}
-            //   onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
-            // />
           )}
           ItemSeparatorComponent={LeapItemSeparator}
-          ListFooterComponent={ListFooterComponent}
+          // ListFooterComponent={ListFooterComponent}
           ListFooterComponent={() =>
             loadingMore ? (
               <ListFooterComponent children={<Text>Loading</Text>} />
@@ -312,7 +306,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     width: '100%',
-    height: 300,
+    height: 500,
     backgroundColor: colors.light,
   },
 });
