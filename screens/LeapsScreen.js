@@ -14,6 +14,7 @@ import FilterCategoryContext from '../auth/filterCategoryContext';
 import FilterLocationContext from '../auth/filterLocationContext';
 import LeapsContext from '../auth/leapsContext';
 import LeapsStateContext from '../auth/leapsStateContext';
+import LoadingMoreContext from '../auth/loadingMoreContext';
 import LoadMoreContext from '../auth/loadMoreContext';
 import LocationsContext from '../auth/locationContext';
 import ActivityIndicator from '../components/ActivityIndicator';
@@ -53,12 +54,14 @@ function LeapsScreen({ navigation }) {
   const filterLocationContext = useContext(FilterLocationContext);
   const errorContext = useContext(ErrorContext);
   const loadMoreContext = useContext(LoadMoreContext);
+  const loadingMoreContext = useContext(LoadingMoreContext);
+  const loadingMore = loadingMoreContext.loadingMore;
 
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
   // let lastLoadedLeapId = '';
   // const [lastLoadedLeapId, setLastLoadedLeapId] = useState('');
-  const [loadingMore, setLoadingMore] = useState(false);
+  // const [loadingMore, setLoadingMore] = useState(false);
 
   // if (leaps === []) {
   //   console.log('This shit is running');
@@ -142,13 +145,13 @@ function LeapsScreen({ navigation }) {
           maintainVisibleContentPosition={true}
           onEndReached={() => {
             if (!loadingMore) {
-              setLoadingMore(true);
+              loadingMoreContext.setLoadingMore(true);
               leapsStateContext.setIsLeapsStateStale(true);
 
               loadMoreContext.setLoadMore(true);
               // loadLeaps(true);
               console.log('Running');
-              setLoadingMore(false);
+              loadingMoreContext.setLoadingMore(false);
             }
           }}
           onEndReachedThreshold={0.5}
@@ -178,7 +181,9 @@ function LeapsScreen({ navigation }) {
           // ListFooterComponent={ListFooterComponent}
           ListFooterComponent={() =>
             loadingMore ? (
-              <ListFooterComponent children={<Text>Loading</Text>} />
+              <ListFooterComponent
+                children={<Text>Loading more Leaps!</Text>}
+              />
             ) : (
               <ListFooterComponent />
             )

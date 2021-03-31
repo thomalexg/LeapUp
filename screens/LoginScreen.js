@@ -29,7 +29,7 @@ function LoginScreen() {
     }
     console.log('Login done');
     await cache.store('user', result.data.user);
-    const getUser = await cache.get('user', 5);
+    const getUser = await cache.get('user', 43200);
     authContext.setUser(getUser);
     setLoginFailed(false);
   };

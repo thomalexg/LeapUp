@@ -13,6 +13,7 @@ import FilterCategoryContext from './auth/filterCategoryContext';
 import FilterLocationContext from './auth/filterLocationContext';
 import LeapsContext from './auth/leapsContext';
 import LeapsStateContext from './auth/leapsStateContext';
+import LoadingMoreContext from './auth/loadingMoreContext';
 import LoadMoreContext from './auth/loadMoreContext';
 import LocationsContext from './auth/locationContext';
 import UsernameContext from './auth/usernameContext';
@@ -42,6 +43,7 @@ export default App = () => {
   const [error, setError] = useState(false);
   const [loadMore, setLoadMore] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   // console.log('location', locations);
   useEffect(() => {
     (async () => {
@@ -97,6 +99,7 @@ export default App = () => {
     // const loadLeaps = useCallback(
 
     setLoading(true);
+    setLoadingMore(true);
     // console.log('location:', filterLocation);
     // console.log('category:', filterCategory);
     // console.log('categories', categories);
@@ -115,6 +118,7 @@ export default App = () => {
 
     if (!response.ok) {
       setLoading(false);
+      setLoadingMore(false);
       console.log('response is not ok', response);
       return setError(true);
     }
@@ -137,6 +141,7 @@ export default App = () => {
       console.log('length of new leeps (!==5)', newLeaps.length);
       setIsLeapsStateStale(false);
       setLoading(false);
+      setLoadingMore(false);
       return setLeaps(newLeaps);
     }
 
@@ -151,6 +156,7 @@ export default App = () => {
     );
     setIsLeapsStateStale(false);
     setLoading(false);
+    setLoadingMore(false);
     setLeaps(
       response.data.map((leap) => ({
         ...leap,
@@ -181,35 +187,39 @@ export default App = () => {
                       <LoadMoreContext.Provider
                         value={{ loadMore, setLoadMore }}
                       >
-                        <NavigationContainer>
-                          <Stack.Navigator>
-                            {user ? (
-                              //  <AppNavigator />
-                              <Stack.Screen
-                                name="AppNavigator"
-                                component={AppNavigator}
-                                options={{ headerShown: false }}
-                              />
-                            ) : (
-                              // <AuthNavigator setUser={setUser} />
-                              <>
+                        <LoadingMoreContext.Provider
+                          value={{ loadingMore, setLoadingMore }}
+                        >
+                          <NavigationContainer>
+                            <Stack.Navigator>
+                              {user ? (
+                                //  <AppNavigator />
                                 <Stack.Screen
-                                  name="Welcome"
-                                  component={WelcomeScreen}
+                                  name="AppNavigator"
+                                  component={AppNavigator}
                                   options={{ headerShown: false }}
                                 />
-                                <Stack.Screen
-                                  name="Login"
-                                  component={LoginScreen}
-                                />
-                                <Stack.Screen
-                                  name="Register"
-                                  component={RegisterScreen}
-                                />
-                              </>
-                            )}
-                          </Stack.Navigator>
-                        </NavigationContainer>
+                              ) : (
+                                // <AuthNavigator setUser={setUser} />
+                                <>
+                                  <Stack.Screen
+                                    name="Welcome"
+                                    component={WelcomeScreen}
+                                    options={{ headerShown: false }}
+                                  />
+                                  <Stack.Screen
+                                    name="Login"
+                                    component={LoginScreen}
+                                  />
+                                  <Stack.Screen
+                                    name="Register"
+                                    component={RegisterScreen}
+                                  />
+                                </>
+                              )}
+                            </Stack.Navigator>
+                          </NavigationContainer>
+                        </LoadingMoreContext.Provider>
                       </LoadMoreContext.Provider>
                     </ErrorContext.Provider>
                   </FilterCategoryContext.Provider>
