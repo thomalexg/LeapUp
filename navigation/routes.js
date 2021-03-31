@@ -9,5 +9,6 @@ export default Object.freeze({
   FAVORITELEAPS: 'Favourite Leaps',
   SETTINGS: 'Settings',
   PASSWORD: 'Password',
-  EMAIL: 'Email'
+  EMAIL: 'Email',
+  DELETE: 'Delete Account'
 });

@@ -8,9 +8,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import getLeapsApi from '../api/getLeaps';
 import CategoriesContext from '../auth/categoriesContext';
-import AuthContext from '../auth/context';
+import ErrorContext from '../auth/errorContext';
+import FilterCategoryContext from '../auth/filterCategoryContext';
+import FilterLocationContext from '../auth/filterLocationContext';
+import LeapsContext from '../auth/leapsContext';
+import LeapsStateContext from '../auth/leapsStateContext';
+import LoadMoreContext from '../auth/loadMoreContext';
 import LocationsContext from '../auth/locationContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
@@ -25,118 +29,62 @@ import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
 import colors from '../config/colors';
 import routes from '../navigation/routes';
-import cache from '../utility/cache';
 
 // import {useNetInfo} from 'react-native-community/netinfo';
 
 function LeapsScreen({ navigation }) {
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
   const [leaps, setLeaps] = useState([]);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [filterLocation, setFilterLocation] = useState('');
-  const [filterCategory, setFilterCategory] = useState('');
+  // const [filterLocation, setFilterLocation] = useState('');
+  // const [filterCategory, setFilterCategory] = useState('');
   const locationsContext = useContext(LocationsContext);
   const categoriesContext = useContext(CategoriesContext);
   const categories = categoriesContext.categories;
   const locations = locationsContext.locations;
+  const leapsContext = useContext(LeapsContext);
+  const leapsFromContext = leapsContext.leaps;
+  const leapsStateContext = useContext(LeapsStateContext);
+  filterCategoryContext = useContext(FilterCategoryContext);
+  const filterLocationContext = useContext(FilterLocationContext);
+  const errorContext = useContext(ErrorContext);
+  const loadMoreContext = useContext(LoadMoreContext);
+
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
   // let lastLoadedLeapId = '';
   // const [lastLoadedLeapId, setLastLoadedLeapId] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
+  // if (leaps === []) {
+  //   console.log('This shit is running');
+  //   return leapsStateContext.setIsLeapsSateStale(true);
+  // }
+  // console.log('leaps of leapsScreen', leaps);
   useEffect(() => {
-    loadLeaps();
-    // const categorieFunc = async () => {
-    //   const getCategories = await categoriesApi.getCategories();
-    //   // console.log('The categories should be here:', getCategories.data);
-    //   setCategories(getCategories.data);
-    // };
-    // categorieFunc();
-  }, [filterCategory, filterLocation]);
+    // console.log('This shit is running');
+    // if (leaps !== []) {
+    //   setLeaps(...leaps, leapsFromContext);
+    // }
+    setLeaps(leapsFromContext);
+  }, [leapsFromContext]);
 
   const handleSubmit = (filter) => {
     console.log('filter', filter);
     setModalVisible(false);
     setLeaps([]);
-    setFilterCategory(filter.category !== '' ? filter.category : undefined);
-    setFilterLocation(filter.location !== '' ? filter.location : undefined);
+    filterCategoryContext.setFilterCategory(
+      filter.category !== '' ? filter.category : undefined,
+    );
+    filterLocationContext.setFilterLocation(
+      filter.location !== '' ? filter.location : undefined,
+    );
   };
 
-  const loadLeaps = async (loadMore) => {
-    setLoading(true);
-    console.log('location:', filterLocation);
-    console.log('category:', filterCategory);
-
-    // const response = await leapsApi.getLeaps();
-    const response = await getLeapsApi.getfilteredleaps(
-      filterCategory?.id,
-      filterLocation?.id,
-      loadMore ? leaps.slice(-1)[0].id : undefined,
-    );
-    // console.log('response of leaps', response.data.errors);
-    setLoading(false);
-
-    if (response.data?.errors?.[0]?.message === 'no valid token') {
-      // console.log('should delete user after this line');
-      const deletedUser = await cache.deleteUser('user');
-      console.log('deleteduser', deletedUser);
-      await authContext.setUser(deletedUser);
-      await logoutApi.logout();
-    }
-
-    if (!response.ok) {
-      setLoading(false);
-      return setError(true);
-    }
-
-    setError(false);
-    if (loadMore) {
-      const oldLeaps = [...leaps];
-      const alteredLeaps = response.data.map((leap) => ({
-        ...leap,
-        category: categories.find(
-          (category) => category.id === leap.categoryId,
-        ),
-      }));
-      console.log('oldLeaps', oldLeaps.length);
-      console.log('alteredLeaps', alteredLeaps.length);
-      const newLeaps = oldLeaps.concat(alteredLeaps);
-      console.log('newLeaps', newLeaps.length);
-      return setLeaps(newLeaps);
-    }
-    // setLeaps(
-    //   response.data.map((leap) => ({
-    //     ...leap,
-    //     category: categories.find(
-    //       (category) => category.id === leap.category_id,
-    //     ),
-    //   })),
-    // );
-    console.log(
-      response.data.map((leap) => ({
-        ...leap,
-        category: categories.find(
-          (category) => category.id === leap.categoryId,
-        ),
-      })),
-    );
-    setLeaps(
-      response.data.map((leap) => ({
-        ...leap,
-        category: categories.find(
-          (category) => category.id === leap.categoryId,
-        ),
-      })),
-    );
-    // lastLoadedLeapId = response.data.slice(-1)[0].id;
-    // console.log('response', response.data.slice(-1)[0].id);
-    // setLastLoadedLeapId(response?.data?.slice(-1)[0]?.id || 1);
-  };
   if (!netInfo.isInternetReachable) {
     return (
       <Screen>
@@ -174,10 +122,15 @@ function LeapsScreen({ navigation }) {
           onPress={() => setModalVisible(true)}
         />
       </View> */}
-      {error && (
+      {errorContext.error && (
         <>
           <AppText>Couldn´t retrieve the leaps</AppText>
-          <AppButton title="Refresh" onPress={loadLeaps} />
+          <AppButton
+            title="Refresh"
+            onPress={() => {
+              return leapsStateContext.setIsLeapsStateStale(true);
+            }}
+          />
         </>
       )}
       {/* {network.isInternetReachable && alert('No internet connection')} */}
@@ -189,18 +142,21 @@ function LeapsScreen({ navigation }) {
           onEndReached={() => {
             if (!loadingMore) {
               setLoadingMore(true);
+              leapsStateContext.setIsLeapsStateStale(true);
 
-              loadLeaps(true);
+              loadMoreContext.setLoadMore(true);
+              // loadLeaps(true);
               console.log('Running');
               setLoadingMore(false);
             }
           }}
           onEndReachedThreshold={0.5}
           onRefresh={() => {
-            loadLeaps();
+            console.log('Running refresh');
+            return leapsStateContext.setIsLeapsStateStale(true);
           }}
           // data={leaps.sort((a, b) => a.id < b.id)}
-          data={leaps}
+          data={leaps === [] ? leaps : leaps}
           keyExtractor={(leaps) => leaps.id.toString()}
           renderItem={({ item }) => (
             <ListItem
@@ -238,8 +194,8 @@ function LeapsScreen({ navigation }) {
           />
           <Form
             initialValues={{
-              category: filterCategory,
-              location: filterLocation,
+              category: filterCategoryContext.filterCategory,
+              location: filterLocationContext.filterLocation,
             }}
             onSubmit={handleSubmit}
           >
@@ -249,9 +205,10 @@ function LeapsScreen({ navigation }) {
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
               placeholder={
-                filterCategory === '' || filterCategory === undefined
+                filterCategoryContext.filterCategory === '' ||
+                filterCategoryContext.filterCategory === undefined
                   ? 'Category'
-                  : filterCategory.category
+                  : filterCategoryContext.filterCategory.category
               }
               width="50%"
             />
@@ -260,9 +217,10 @@ function LeapsScreen({ navigation }) {
               numberOfColumns={1}
               items={locations}
               placeholder={
-                filterLocation === '' || filterLocation === undefined
+                filterLocationContext.filterLocation === '' ||
+                filterLocationContext.filterLocation === undefined
                   ? 'Search for your location'
-                  : filterLocation.city
+                  : filterLocationContext.filterLocation.city
               }
               // setStadt={setStadt}
             />
@@ -274,11 +232,11 @@ function LeapsScreen({ navigation }) {
             title="Reset Filter"
             color="third"
             onPress={() => {
-              setFilterCategory('');
-              setFilterLocation('');
+              filterCategoryContext.setFilterCategory('');
+              filterLocationContext.setFilterLocation('');
 
-              setLeaps([]);
-              loadLeaps();
+              // setLeaps([]);
+              leapsStateContext.setIsLeapsStateStale(true);
               setModalVisible(false);
             }}
           />
@@ -312,3 +270,74 @@ const styles = StyleSheet.create({
 });
 
 export default LeapsScreen;
+
+// const loadLeaps = async (loadMore) => {
+//   setLoading(true);
+//   console.log('location:', filterLocation);
+//   console.log('category:', filterCategory);
+
+//   // const response = await leapsApi.getLeaps();
+//   const response = await getLeapsApi.getfilteredleaps(
+//     filterCategory?.id,
+//     filterLocation?.id,
+//     loadMore ? leaps.slice(-1)[0].id : undefined,
+//   );
+//   // console.log('response of leaps', response.data.errors);
+//   setLoading(false);
+
+//   if (response.data?.errors?.[0]?.message === 'no valid token') {
+//     // console.log('should delete user after this line');
+//     const deletedUser = await cache.deleteUser('user');
+//     console.log('deleteduser', deletedUser);
+//     await authContext.setUser(deletedUser);
+//     await logoutApi.logout();
+//   }
+
+//   if (!response.ok) {
+//     setLoading(false);
+//     return setError(true);
+//   }
+
+//   setError(false);
+//   if (loadMore) {
+//     const oldLeaps = [...leaps];
+//     const alteredLeaps = response.data.map((leap) => ({
+//       ...leap,
+//       category: categories.find(
+//         (category) => category.id === leap.categoryId,
+//       ),
+//     }));
+//     console.log('oldLeaps', oldLeaps.length);
+//     console.log('alteredLeaps', alteredLeaps.length);
+//     const newLeaps = oldLeaps.concat(alteredLeaps);
+//     console.log('newLeaps', newLeaps.length);
+//     return setLeaps(newLeaps);
+//   }
+//   // setLeaps(
+//   //   response.data.map((leap) => ({
+//   //     ...leap,
+//   //     category: categories.find(
+//   //       (category) => category.id === leap.category_id,
+//   //     ),
+//   //   })),
+//   // );
+//   console.log(
+//     response.data.map((leap) => ({
+//       ...leap,
+//       category: categories.find(
+//         (category) => category.id === leap.categoryId,
+//       ),
+//     })),
+//   );
+//   setLeaps(
+//     response.data.map((leap) => ({
+//       ...leap,
+//       category: categories.find(
+//         (category) => category.id === leap.categoryId,
+//       ),
+//     })),
+//   );
+//   // lastLoadedLeapId = response.data.slice(-1)[0].id;
+//   // console.log('response', response.data.slice(-1)[0].id);
+//   // setLastLoadedLeapId(response?.data?.slice(-1)[0]?.id || 1);
+// };

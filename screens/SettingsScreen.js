@@ -25,6 +25,14 @@ const menuItems = [
     },
     targetScreen: routes.EMAIL,
   },
+  {
+    title: 'Delete Account',
+    icon: {
+      name: 'delete Account',
+      backgroundColor: colors.secondary,
+    },
+    targetScreen: routes.DELETE,
+  },
 ];
 
 function AccountScreen({ navigation }) {

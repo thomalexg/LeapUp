@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import AccountScreen from '../screens/AccountScreen';
+import DeleteAccScreen from '../screens/DeleteAccScreen';
 import EmailScreen from '../screens/EmailScreen';
 import FavoriteLeaps from '../screens/FavoriteLeaps';
 import MessagesScreen from '../screens/MessagesScreen';
@@ -18,5 +19,6 @@ export default AccountNavigator = () => (
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="Password" component={PasswordScreen} />
     <Stack.Screen name="Email" component={EmailScreen} />
+    <Stack.Screen name="Delete Account" component={DeleteAccScreen} />
   </Stack.Navigator>
 );
