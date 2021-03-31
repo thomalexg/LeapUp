@@ -76,13 +76,14 @@ function LeapsScreen({ navigation }) {
   const handleSubmit = (filter) => {
     console.log('filter', filter);
     setModalVisible(false);
-    setLeaps([]);
+    // setLeaps([]);
     filterCategoryContext.setFilterCategory(
       filter.category !== '' ? filter.category : undefined,
     );
     filterLocationContext.setFilterLocation(
       filter.location !== '' ? filter.location : undefined,
     );
+    leapsStateContext.setIsLeapsStateStale(true);
   };
 
   if (!netInfo.isInternetReachable) {
