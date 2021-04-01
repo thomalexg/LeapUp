@@ -4,13 +4,14 @@ import * as Yup from 'yup';
 import categoriesApi from '../api/categories';
 import leapsApi from '../api/leaps';
 import AuthContext from '../auth/context';
+import LeapsStateContext from '../auth/leapsStateContext';
 import LocationsContext from '../auth/locationContext';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton
+  SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
@@ -36,6 +37,7 @@ function LeapAddScreen() {
   const [progress, setProgress] = useState(0);
   const [categories, setCategories] = useState([]);
   const [deleteCity, setDeleteCity] = useState(false);
+  const leapsStateContext = useContext(LeapsStateContext);
   // console.log('The categories', categories);
   useEffect(() => {
     const categorieFunc = async () => {
@@ -61,6 +63,7 @@ function LeapAddScreen() {
       setUploadVisible(false);
       return alert('Could not add new leap :(');
     }
+    leapsStateContext.setIsLeapsStateStale(true);
     resetForm();
     // navigation.navigate(routes.MYLEAPS);
   };
