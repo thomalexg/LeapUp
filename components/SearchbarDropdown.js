@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFormikContext } from 'formik';
+import { matchSorter } from 'match-sorter';
 import React, { useContext, useState } from 'react';
 import {
   FlatList,
@@ -36,13 +37,16 @@ function SearchbarDropdown({
     setCity(value);
     setSearch(value.toLowerCase());
     setFilteredLocations(
-      locations.filter(
-        (location) =>
-          location.city.toLowerCase().indexOf(search) > -1 ||
-          location.country.toLowerCase().indexOf(search) > -1 ||
-          location.state.toLowerCase().indexOf(search) > -1,
-      ),
+      matchSorter(locations, search, { keys: ['city', 'country', 'state'] }),
     );
+    // setFilteredLocations(
+    //   locations.filter(
+    //     (location) =>
+    //       location.city.toLowerCase().indexOf(search) > -1 ||
+    //       location.country.toLowerCase().indexOf(search) > -1 ||
+    //       location.state.toLowerCase().indexOf(search) > -1,
+    //   ),
+    // );
   };
   // console.log('filteredLocations:', filteredLocations);
   return (
