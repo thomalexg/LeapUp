@@ -30,7 +30,7 @@ function LeapAddScreen() {
   // const [stadt, setStadt] = useContext('');
   // console.log('locationsContext:', locationsContext);
   const locations = locationsContext.locations;
-  console.log('locations:', locations);
+  // console.log('locations:', locations);
   // console.log('ADDScreen user', authContext.user);
   const user = authContext.user;
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -38,6 +38,7 @@ function LeapAddScreen() {
   const [categories, setCategories] = useState([]);
   const [deleteCity, setDeleteCity] = useState(false);
   const leapsStateContext = useContext(LeapsStateContext);
+  const [cityReset, setCityReset] = useState(false);
   // console.log('The categories', categories);
   useEffect(() => {
     const categorieFunc = async () => {
@@ -49,9 +50,9 @@ function LeapAddScreen() {
   }, []);
 
   const handleSubmit = async (leap, { resetForm }) => {
-    console.log('leapAdd', leap);
-    // console.log('userAdd', user);
-    console.log('leap', leap);
+    // console.log('leapAdd', leap);
+    // // console.log('userAdd', user);
+    // console.log('leap', leap);
     setProgress(0);
     setUploadVisible(true);
     const result = await leapsApi.addLeap(leap, user, (progress) =>
@@ -64,6 +65,7 @@ function LeapAddScreen() {
       return alert('Could not add new leap :(');
     }
     leapsStateContext.setIsLeapsStateStale(true);
+    setCityReset(true);
     resetForm();
     // navigation.navigate(routes.MYLEAPS);
   };
@@ -91,6 +93,8 @@ function LeapAddScreen() {
           numberOfColumns={1}
           items={locations}
           placeholder="Search for your location"
+          cityReset={cityReset}
+          setCityReset={setCityReset}
 
           // onBlur={() => setIsSearching(false)}
           // setStadt={setStadt}

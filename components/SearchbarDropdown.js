@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFormikContext } from 'formik';
 import { matchSorter } from 'match-sorter';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -21,6 +21,8 @@ function SearchbarDropdown({
   numberOfColumns = 1,
   name,
   placeholder,
+  cityReset,
+  setCityReset,
 }) {
   const { setFieldValue, errors, touched } = useFormikContext();
 
@@ -31,6 +33,16 @@ function SearchbarDropdown({
   const [search, setSearch] = useState('');
   const [filteredLocations, setFilteredLocations] = useState(items);
   const [city, setCity] = useState('');
+
+  useEffect(() => {
+    function resetCity() {
+      if (cityReset) {
+        setCity('');
+        setCityReset(false);
+      }
+    }
+    resetCity();
+  }, [cityReset, setCityReset]);
 
   const onSearch = (value) => {
     setIsSearching(true);
@@ -80,9 +92,10 @@ function SearchbarDropdown({
               <View>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log('item.item', item.item);
+                    // console.log('item.item', item.item);
                     setCity(item.item.city);
                     setFieldValue('location', item.item);
+
                     setIsSearching(false);
                   }}
                 >

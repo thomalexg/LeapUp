@@ -6,6 +6,7 @@ import logoutApi from '../api/logout';
 import myLeapsApi from '../api/myLeaps';
 import CategoriesContext from '../auth/categoriesContext';
 import AuthContext from '../auth/context';
+import LeapsStateContext from '../auth/leapsStateContext';
 import UsernameContext from '../auth/usernameContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
@@ -30,6 +31,7 @@ function MyLeapsScreen({ navigation }) {
   const [loadingMore, setLoadingMore] = useState(false);
   const categoriesContext = useContext(CategoriesContext);
   const categories = categoriesContext.categories;
+  const leapsStateContext = useContext(LeapsStateContext);
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
 
@@ -91,6 +93,7 @@ function MyLeapsScreen({ navigation }) {
     // console.log('item', item);
     await deleteLeapApi.deleteLeap(item);
     loadLeaps();
+    leapsStateContext.setIsLeapsStateStale(true);
   };
   return (
     <Screen style={styles.screen}>
