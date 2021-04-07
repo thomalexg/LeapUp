@@ -2,6 +2,7 @@
   "expo": {
     "name": "LeapUp",
     "slug": "LeapUp",
+    "privacy": "unlisted",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo-new.png",
