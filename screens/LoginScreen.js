@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Yup from 'yup';
 import loginApi from '../api/login';
 import AuthContext from '../auth/context';
@@ -9,7 +10,6 @@ import {
   FormField,
   SubmitButton,
 } from '../components/forms';
-import Screen from '../components/Screen';
 import cache from '../utility/cache';
 
 const validationSchema = Yup.object().shape({
@@ -35,7 +35,8 @@ function LoginScreen() {
   };
 
   return (
-    <Screen style={styles.screen}>
+    // <Screen style={styles.screen}>
+    <KeyboardAwareScrollView extraHeight={600}>
       <Image style={styles.logo} source={require('../assets/logo-new.png')} />
 
       <Form
@@ -48,6 +49,7 @@ function LoginScreen() {
           visible={loginFailed}
         />
         <FormField
+          data-cy="enter-username"
           autoCorrect={false}
           icon="account"
           name="username"
@@ -65,7 +67,8 @@ function LoginScreen() {
         />
         <SubmitButton title="Login" />
       </Form>
-    </Screen>
+    </KeyboardAwareScrollView>
+    // </Screen>
   );
 }
 

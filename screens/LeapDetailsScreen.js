@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import Clipboard from 'expo-clipboard';
+import React, { useContext, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import favoriteApi from '../api/saveLeapAsFavorite';
 import AuthContext from '../auth/context';
@@ -20,6 +21,7 @@ function LeapDetailsScreen({ route, navigation }) {
   const location = locations.filter(
     (location) => location.id === listing.locationId,
   )[0];
+  const [string, setString] = useState('');
   console.log(location);
   console.log('listing', listing);
   return (
@@ -64,6 +66,23 @@ function LeapDetailsScreen({ route, navigation }) {
               onPress={() => {
                 usernameContext.setUsername(listing.username);
                 navigation.navigate(routes.LEAPS_OF_USER);
+              }}
+            />
+            <ListItem
+              // image={require('../assets/thomas.jpg')}
+              showIcon={false}
+              title={listing.email || 'Error'}
+              // subTitle="3 Leaps"
+              IconComponent={
+                <Icon name="email" backgroundColor={colors.medium} />
+              }
+              onPress={async () => {
+                const email = listing.email;
+
+                const cb = Clipboard.setString(email);
+                const text = await Clipboard.getStringAsync();
+
+                alert(`Copied ${text}:)`);
               }}
             />
             <ListItem

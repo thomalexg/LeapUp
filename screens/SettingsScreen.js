@@ -13,7 +13,7 @@ const menuItems = [
     title: 'Change Password',
     icon: {
       name: 'lock-alert',
-      backgroundColor: colors.third,
+      backgroundColor: colors.primary,
     },
     targetScreen: routes.PASSWORD,
   },
@@ -28,8 +28,8 @@ const menuItems = [
   {
     title: 'Delete Account',
     icon: {
-      name: 'delete Account',
-      backgroundColor: colors.secondary,
+      name: 'person_remove',
+      backgroundColor: colors.third,
     },
     targetScreen: routes.DELETE,
   },

@@ -15,6 +15,7 @@ export const addLeap = (leap, user, onUploadProgress) => {
       description: leap.description,
       user_id: user.value.id,
       username: user.value.username,
+      email: user.value.email,
     },
     {
       onUploadProgress: (progress) =>

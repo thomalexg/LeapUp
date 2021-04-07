@@ -26,14 +26,14 @@ const menuItems = [
     },
     targetScreen: routes.FAVORITELEAPS,
   },
-  {
-    title: 'My Messages',
-    icon: {
-      name: 'email',
-      backgroundColor: colors.secondary,
-    },
-    targetScreen: routes.MESSAGES,
-  },
+  // {
+  //   title: 'My Messages',
+  //   icon: {
+  //     name: 'email',
+  //     backgroundColor: colors.secondary,
+  //   },
+  //   targetScreen: routes.MESSAGES,
+  // },
 ];
 
 function AccountScreen({ navigation }) {

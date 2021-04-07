@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Yup from 'yup';
 import registerApi from '../api/register';
 import AuthContext from '../auth/context';
@@ -7,7 +8,7 @@ import {
   ErrorMessage,
   Form,
   FormField,
-  SubmitButton
+  SubmitButton,
 } from '../components/forms';
 import Screen from '../components/Screen';
 import cache from '../utility/cache';
@@ -43,57 +44,59 @@ function RegisterScreen() {
   };
   return (
     <Screen style={styles.container}>
-      {/* {authNotification && <AppText>User already exists!</AppText>} */}
-      <Form
-        initialValues={{
-          username: '',
-          email: '',
-          password: '',
-          password1: '',
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <ErrorMessage
-          error="Invalid mail, username or password!"
-          visible={authNotification}
-        />
-        <FormField
-          autoCorrect={false}
-          icon="account"
-          name="username"
-          placeholder="Username"
-          textContentType="username"
-        />
-        <FormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="email"
-          keyboardType="email-address"
-          name="email"
-          placeholder="Email"
-          textContentType="emailAddress"
-        />
-        <FormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="lock"
-          name="password"
-          placeholder="Password"
-          secureTextEntry
-          textContentType="password"
-        />
-        <FormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="lock"
-          name="password1"
-          placeholder="Repeat Password"
-          secureTextEntry
-          textContentType="password"
-        />
-        <SubmitButton title="Register" />
-      </Form>
+      <KeyboardAwareScrollView extraHeight={200}>
+        {/* {authNotification && <AppText>User already exists!</AppText>} */}
+        <Form
+          initialValues={{
+            username: '',
+            email: '',
+            password: '',
+            password1: '',
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <ErrorMessage
+            error="Invalid mail, username or password!"
+            visible={authNotification}
+          />
+          <FormField
+            autoCorrect={false}
+            icon="account"
+            name="username"
+            placeholder="Username"
+            textContentType="username"
+          />
+          <FormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="email"
+            keyboardType="email-address"
+            name="email"
+            placeholder="Email"
+            textContentType="emailAddress"
+          />
+          <FormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            name="password"
+            placeholder="Password"
+            secureTextEntry
+            textContentType="password"
+          />
+          <FormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            name="password1"
+            placeholder="Repeat Password"
+            secureTextEntry
+            textContentType="password"
+          />
+          <SubmitButton title="Register" />
+        </Form>
+      </KeyboardAwareScrollView>
     </Screen>
   );
 }
