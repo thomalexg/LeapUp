@@ -16,6 +16,7 @@ import LeapsStateContext from './auth/leapsStateContext';
 import LoadingMoreContext from './auth/loadingMoreContext';
 import LoadMoreContext from './auth/loadMoreContext';
 import LocationsContext from './auth/locationContext';
+import NumOfLeapsContext from './auth/numOfLeapsContext';
 import UsernameContext from './auth/usernameContext';
 import AppNavigator from './navigation/AppNavigator';
 import LoginScreen from './screens/LoginScreen';
@@ -44,6 +45,7 @@ export default App = () => {
   const [loadMore, setLoadMore] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [numOfLeaps, setNumOfLeaps] = useState(6);
   // console.log('location', locations);
   useEffect(() => {
     (async () => {
@@ -123,11 +125,11 @@ export default App = () => {
       return setError(true);
     }
     // setLoading(false);
-
+    setNumOfLeaps(response.data.count);
     setError(false);
     if (loadMore) {
       const oldLeaps = [...leaps];
-      const alteredLeaps = response.data.map((leap) => ({
+      const alteredLeaps = response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -139,26 +141,27 @@ export default App = () => {
       console.log('loadMore in loadLeaps');
       setLoadMore(undefined);
       console.log('length of new leeps (!==5)', newLeaps.length);
+      console.log('numofLeaps', numOfLeaps);
       setIsLeapsStateStale(false);
       setLoading(false);
       setLoadingMore(false);
       return setLeaps(newLeaps);
     }
 
-    console.log(
-      'length should be 5:',
-      response.data.map((leap) => ({
-        ...leap,
-        category: categories.find(
-          (category) => category.id === leap.categoryId,
-        ),
-      })).length,
-    );
+    // console.log(
+    //   'length should be 5:',
+    //   response.data.leaps.map((leap) => ({
+    //     ...leap,
+    //     category: categories.find(
+    //       (category) => category.id === leap.categoryId,
+    //     ),
+    //   })).length,
+    // );
     setIsLeapsStateStale(false);
     setLoading(false);
     setLoadingMore(false);
     setLeaps(
-      response.data.map((leap) => ({
+      response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -190,35 +193,37 @@ export default App = () => {
                         <LoadingMoreContext.Provider
                           value={{ loadingMore, setLoadingMore }}
                         >
-                          <NavigationContainer>
-                            <Stack.Navigator>
-                              {user ? (
-                                //  <AppNavigator />
-                                <Stack.Screen
-                                  name="AppNavigator"
-                                  component={AppNavigator}
-                                  options={{ headerShown: false }}
-                                />
-                              ) : (
-                                // <AuthNavigator setUser={setUser} />
-                                <>
+                          <NumOfLeapsContext.Provider value={{ numOfLeaps }}>
+                            <NavigationContainer>
+                              <Stack.Navigator>
+                                {user ? (
+                                  //  <AppNavigator />
                                   <Stack.Screen
-                                    name="Welcome"
-                                    component={WelcomeScreen}
+                                    name="AppNavigator"
+                                    component={AppNavigator}
                                     options={{ headerShown: false }}
                                   />
-                                  <Stack.Screen
-                                    name="Login"
-                                    component={LoginScreen}
-                                  />
-                                  <Stack.Screen
-                                    name="Register"
-                                    component={RegisterScreen}
-                                  />
-                                </>
-                              )}
-                            </Stack.Navigator>
-                          </NavigationContainer>
+                                ) : (
+                                  // <AuthNavigator setUser={setUser} />
+                                  <>
+                                    <Stack.Screen
+                                      name="Welcome"
+                                      component={WelcomeScreen}
+                                      options={{ headerShown: false }}
+                                    />
+                                    <Stack.Screen
+                                      name="Login"
+                                      component={LoginScreen}
+                                    />
+                                    <Stack.Screen
+                                      name="Register"
+                                      component={RegisterScreen}
+                                    />
+                                  </>
+                                )}
+                              </Stack.Navigator>
+                            </NavigationContainer>
+                          </NumOfLeapsContext.Provider>
                         </LoadingMoreContext.Provider>
                       </LoadMoreContext.Provider>
                     </ErrorContext.Provider>

@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     alignContent: 'center',
     alignItems: 'center',
+    paddingBottom: 50,
   },
 });
 

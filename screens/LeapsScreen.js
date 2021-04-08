@@ -16,9 +16,11 @@ import LeapsStateContext from '../auth/leapsStateContext';
 import LoadingMoreContext from '../auth/loadingMoreContext';
 import LoadMoreContext from '../auth/loadMoreContext';
 import LocationsContext from '../auth/locationContext';
+import NumOfLeapsContext from '../auth/numOfLeapsContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import CategoryPickerItem from '../components/CategoryPickerItem';
+import EndIndicator from '../components/EndIndicator';
 import { Form, FormPicker as Picker, SubmitButton } from '../components/forms';
 import Icon from '../components/Icon';
 import { ListItem } from '../components/lists';
@@ -55,6 +57,8 @@ function LeapsScreen({ navigation }) {
   const loadMoreContext = useContext(LoadMoreContext);
   const loadingMoreContext = useContext(LoadingMoreContext);
   const loadingMore = loadingMoreContext.loadingMore;
+  const numOfLeapsContext = useContext(NumOfLeapsContext);
+  const numOfLeaps = numOfLeapsContext.numOfLeaps;
 
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
@@ -179,11 +183,26 @@ function LeapsScreen({ navigation }) {
           )}
           ItemSeparatorComponent={LeapItemSeparator}
           // ListFooterComponent={ListFooterComponent}
+          // ListFooterComponent={() =>
+          //   loadingMore ? (
+          //     <ListFooterComponent
+          //       // children={<Text>Loading more Leaps!</Text>}
+          //       children={<ActivityIndicator visible={true} />}
+          //     />
+          //   ) : (
+          //     <ListFooterComponent />
+          //   )
+          // }
           ListFooterComponent={() =>
-            loadingMore ? (
+            loadingMore && numOfLeaps !== leaps.length ? (
               <ListFooterComponent
-                // children={<Text>Loading more Leaps!</Text>}
+                // children={<Text>Loading...</Text>}
                 children={<ActivityIndicator visible={true} />}
+              />
+            ) : loadingMore && numOfLeaps === leaps.length ? (
+              <ListFooterComponent
+                // children={<Text>This is the end!</Text>}
+                children={<EndIndicator visible={true} />}
               />
             ) : (
               <ListFooterComponent />

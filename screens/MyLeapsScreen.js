@@ -10,6 +10,7 @@ import LeapsStateContext from '../auth/leapsStateContext';
 import UsernameContext from '../auth/usernameContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
+import EndIndicator from '../components/EndIndicator';
 import Icon from '../components/Icon';
 import { ListItem, ListItemDeleteAction } from '../components/lists';
 import LeapItemSeparator from '../components/lists/LeapItemSeparator';
@@ -29,6 +30,7 @@ function MyLeapsScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [numOfLeaps, setNumOfLeaps] = useState(6);
   const categoriesContext = useContext(CategoriesContext);
   const categories = categoriesContext.categories;
   const leapsStateContext = useContext(LeapsStateContext);
@@ -62,10 +64,12 @@ function MyLeapsScreen({ navigation }) {
       return setError(true);
     }
 
+    setNumOfLeaps(response.data.count);
+    console.log('leapsLength', leaps.length);
     setError(false);
     if (loadMore) {
       const oldLeaps = [...leaps];
-      const alteredLeaps = response.data.map((leap) => ({
+      const alteredLeaps = response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -79,7 +83,7 @@ function MyLeapsScreen({ navigation }) {
     }
 
     setLeaps(
-      response.data.map((leap) => ({
+      response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -144,10 +148,15 @@ function MyLeapsScreen({ navigation }) {
         ItemSeparatorComponent={LeapItemSeparator}
         // ListFooterComponent={ListFooterComponent}
         ListFooterComponent={() =>
-          loading ? (
+          loading && numOfLeaps !== leaps.length ? (
             <ListFooterComponent
               // children={<Text>Loading...</Text>}
               children={<ActivityIndicator visible={true} />}
+            />
+          ) : loading && numOfLeaps === leaps.length ? (
+            <ListFooterComponent
+              // children={<Text>This is the end!</Text>}
+              children={<EndIndicator visible={true} />}
             />
           ) : (
             <ListFooterComponent />
