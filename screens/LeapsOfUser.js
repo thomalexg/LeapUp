@@ -26,14 +26,14 @@ function LeapsOfUser({ navigation }) {
   const [leaps, setLeaps] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [numOfLeaps, setNumOfLeaps] = useState(6);
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [numOfLeaps, setNumOfLeaps] = useState(6);
   const categoriesContext = useContext(CategoriesContext);
   const categories = categoriesContext.categories;
   // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
-  console.log('leaps', leaps);
+
   useEffect(() => {
     loadLeaps();
   }, []);
@@ -61,10 +61,11 @@ function LeapsOfUser({ navigation }) {
       return setError(true);
     }
     setNumOfLeaps(response.data.count);
+    console.log('leapsLength', leaps.length);
     setError(false);
     if (loadMore) {
       const oldLeaps = [...leaps];
-      const alteredLeaps = response.data.leaps?.map((leap) => ({
+      const alteredLeaps = response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -76,9 +77,9 @@ function LeapsOfUser({ navigation }) {
       // console.log('newLeaps', newLeaps.length);
       return setLeaps(newLeaps);
     }
-    console.log('respones', response.data.leaps);
+
     setLeaps(
-      response.data.leaps?.map((leap) => ({
+      response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -97,60 +98,68 @@ function LeapsOfUser({ navigation }) {
       )}
       {/* {network.isInternetReachable && alert('No internet connection')} */}
       {/* <ActivityIndicator visible={loading} /> */}
-      {leaps !== [] && (
-        <FlatList
-          refreshing={refreshing}
-          maintainVisibleContentPosition={true}
-          onEndReached={() => {
-            if (!loadingMore) {
-              setLoadingMore(true);
+      <FlatList
+        refreshing={refreshing}
+        maintainVisibleContentPosition={true}
+        onEndReached={() => {
+          if (!loadingMore) {
+            setLoadingMore(true);
 
-              loadLeaps(true);
-              console.log('Running');
-              setLoadingMore(false);
-            }
-          }}
-          onEndReachedThreshold={0.5}
-          onRefresh={() => {
-            loadLeaps();
-          }}
-          // data={leaps.sort((a, b) => a.id < b.id)}
-          data={leaps}
-          keyExtractor={(leaps) => leaps?.id.toString()}
-          renderItem={({ item }) => (
-            <ListItem
-              showIcon={true}
-              style={styles.list}
-              title={item.title}
-              subTitle={item.description}
-              onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
-              IconComponent={
-                <Icon
-                  backgroundColor={item.category?.backgroundColor || 'blue'}
-                  name={item.category?.icon || 'error'}
-                />
-              }
-            />
-          )}
-          ItemSeparatorComponent={LeapItemSeparator}
-          // ListFooterComponent={ListFooterComponent}
-          ListFooterComponent={() =>
-            loading && numOfLeaps !== leaps.length ? (
-              <ListFooterComponent
-                // children={<Text>Loading...</Text>}
-                children={<ActivityIndicator visible={true} />}
-              />
-            ) : loading && numOfLeaps === leaps.length ? (
-              <ListFooterComponent
-                // children={<Text>This is the end!</Text>}
-                children={<EndIndicator visible={true} />}
-              />
-            ) : (
-              <ListFooterComponent />
-            )
+            loadLeaps(true);
+            console.log('Running');
+            setLoadingMore(false);
           }
-        />
-      )}
+        }}
+        onEndReachedThreshold={0.5}
+        onRefresh={() => {
+          loadLeaps();
+        }}
+        // data={leaps.sort((a, b) => a.id < b.id)}
+        data={leaps}
+        keyExtractor={(leaps) => leaps.id.toString()}
+        renderItem={({ item }) => (
+          <ListItem
+            showIcon={true}
+            style={styles.list}
+            title={item.title}
+            subTitle={item.description}
+            onPress={() => navigation.navigate(routes.LEAP_DETAILS, item)}
+            IconComponent={
+              <Icon
+                backgroundColor={item.category?.backgroundColor || 'blue'}
+                name={item.category?.icon || 'error'}
+              />
+            }
+          />
+        )}
+        ItemSeparatorComponent={LeapItemSeparator}
+        // ListFooterComponent={ListFooterComponent}
+        ListFooterComponent={() =>
+          loading && numOfLeaps !== leaps.length ? (
+            <ListFooterComponent
+              // children={<Text>Loading...</Text>}
+              children={<ActivityIndicator visible={true} />}
+            />
+          ) : loading && numOfLeaps === leaps.length ? (
+            <ListFooterComponent
+              // children={<Text>This is the end!</Text>}
+              children={<EndIndicator visible={true} />}
+            />
+          ) : (
+            <ListFooterComponent />
+          )
+        }
+        // ListFooterComponent={() =>
+        //   loading ? (
+        //     <ListFooterComponent
+        //       // children={<Text>Loading</Text>}
+        //       children={<ActivityIndicator visible={true} />}
+        //     />
+        //   ) : (
+        //     <ListFooterComponent />
+        //   )
+        // }
+      />
     </Screen>
   );
 }
