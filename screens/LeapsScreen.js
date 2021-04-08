@@ -4,7 +4,6 @@ import {
   FlatList,
   Modal,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -101,6 +100,7 @@ function LeapsScreen({ navigation }) {
     <Screen style={styles.screen}>
       <View style={styles.icon}>
         <TouchableWithoutFeedback
+          testID="filter"
           underlayColor={colors.light}
           onPress={() => {
             setModalVisible(true);
@@ -182,16 +182,18 @@ function LeapsScreen({ navigation }) {
           ListFooterComponent={() =>
             loadingMore ? (
               <ListFooterComponent
-                children={<Text>Loading more Leaps!</Text>}
+                // children={<Text>Loading more Leaps!</Text>}
+                children={<ActivityIndicator visible={true} />}
               />
             ) : (
               <ListFooterComponent />
             )
           }
         />
+        {/* <ActivityIndicator visible={loadingMore} /> */}
       </View>
       {/* <View style={styles.bottom} /> */}
-      <Modal visible={modalVisible} animationType="slide">
+      <Modal testID="modal" visible={modalVisible} animationType="slide">
         <Screen>
           <AppButton
             title="Close"

@@ -45,7 +45,6 @@ function LeapsOfUser({ navigation }) {
       loadMore ? leaps.slice(-1)[0].id : undefined,
     );
     // console.log('response of leaps', response.data.errors);
-    setLoading(false);
 
     if (response.data?.errors?.[0]?.message === 'no valid token') {
       // console.log('should delete user after this line');
@@ -95,7 +94,7 @@ function LeapsOfUser({ navigation }) {
         </>
       )}
       {/* {network.isInternetReachable && alert('No internet connection')} */}
-      <ActivityIndicator visible={loading} />
+      {/* <ActivityIndicator visible={loading} /> */}
       <FlatList
         refreshing={refreshing}
         maintainVisibleContentPosition={true}
@@ -133,8 +132,11 @@ function LeapsOfUser({ navigation }) {
         ItemSeparatorComponent={LeapItemSeparator}
         // ListFooterComponent={ListFooterComponent}
         ListFooterComponent={() =>
-          loadingMore ? (
-            <ListFooterComponent children={<Text>Loading</Text>} />
+          loading ? (
+            <ListFooterComponent
+              // children={<Text>Loading</Text>}
+              children={<ActivityIndicator visible={true} />}
+            />
           ) : (
             <ListFooterComponent />
           )

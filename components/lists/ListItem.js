@@ -5,7 +5,6 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import colors from '../../config/colors';
 import Text from '../Text';
 
-
 function ListItem({
   title,
   subTitle,
@@ -13,7 +12,8 @@ function ListItem({
   IconComponent,
   onPress,
   renderRightActions,
-  showIcon
+  showIcon,
+  showCopy,
 }) {
   return (
     <Swipeable renderRightActions={renderRightActions}>
@@ -31,13 +31,20 @@ function ListItem({
               </Text>
             )}
           </View>
-          {showIcon &&
-          <MaterialCommunityIcons
-            color={colors.medium}
-            name="chevron-right"
-            size={25}
-          />
-          }
+          {showIcon && (
+            <MaterialCommunityIcons
+              color={colors.medium}
+              name="chevron-right"
+              size={25}
+            />
+          )}
+          {showCopy && (
+            <MaterialCommunityIcons
+              color={colors.medium}
+              name="content-copy"
+              size={25}
+            />
+          )}
         </View>
       </TouchableHighlight>
     </Swipeable>
