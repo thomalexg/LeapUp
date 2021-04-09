@@ -9,6 +9,7 @@ import AuthContext from '../auth/context';
 import UsernameContext from '../auth/usernameContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
+import EndIndicator from '../components/EndIndicator';
 import Icon from '../components/Icon';
 import { ListItem, ListItemDeleteAction } from '../components/lists';
 import LeapItemSeparator from '../components/lists/LeapItemSeparator';
@@ -28,6 +29,7 @@ function MyLeapsScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [numOfLeaps, setNumOfLeaps] = useState(6);
   const categoriesContext = useContext(CategoriesContext);
   const categories = categoriesContext.categories;
   // console.log('leaps', leaps[0]);
@@ -40,10 +42,11 @@ function MyLeapsScreen({ navigation }) {
   const loadLeaps = async (loadMore) => {
     setLoading(true);
     console.log('user of my leaps:', authContext.user);
+    console.log('leaps', leaps);
     // const response = await leapsApi.getLeaps();
     const response = await getFavoriteLeapsApi.getFavoriteLeaps(
       authContext.user.value.id,
-      loadMore ? leaps.slice(-1)[0].id : undefined,
+      loadMore && leaps !== [] ? leaps?.slice(-1)[0].id : undefined,
     );
     // console.log('response of leaps', response.data.errors);
     setLoading(false);
@@ -60,11 +63,11 @@ function MyLeapsScreen({ navigation }) {
       setLoading(false);
       return setError(true);
     }
-
+    setNumOfLeaps(response.data.count);
     setError(false);
     if (loadMore) {
       const oldLeaps = [...leaps];
-      const alteredLeaps = response.data.map((leap) => ({
+      const alteredLeaps = response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -78,7 +81,7 @@ function MyLeapsScreen({ navigation }) {
     }
 
     setLeaps(
-      response.data.map((leap) => ({
+      response.data.leaps.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -104,7 +107,7 @@ function MyLeapsScreen({ navigation }) {
         </>
       )}
       {/* {network.isInternetReachable && alert('No internet connection')} */}
-      <ActivityIndicator visible={loading} />
+      {/* <ActivityIndicator visible={loading} /> */}
       <FlatList
         refreshing={refreshing}
         maintainVisibleContentPosition={true}
@@ -145,12 +148,27 @@ function MyLeapsScreen({ navigation }) {
         ItemSeparatorComponent={LeapItemSeparator}
         // ListFooterComponent={ListFooterComponent}
         ListFooterComponent={() =>
-          loadingMore ? (
-            <ListFooterComponent children={<Text>Loading</Text>} />
+          loading && numOfLeaps !== leaps.length ? (
+            <ListFooterComponent
+              // children={<Text>Loading...</Text>}
+              children={<ActivityIndicator visible={true} />}
+            />
+          ) : loading && numOfLeaps === leaps.length ? (
+            <ListFooterComponent
+              // children={<Text>This is the end!</Text>}
+              children={<EndIndicator visible={true} />}
+            />
           ) : (
             <ListFooterComponent />
           )
         }
+        // ListFooterComponent={() =>
+        //   loadingMore ? (
+        //     <ListFooterComponent children={<Text>Loading</Text>} />
+        //   ) : (
+        //     <ListFooterComponent />
+        //   )
+        // }
       />
     </Screen>
   );

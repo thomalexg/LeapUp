@@ -9,10 +9,11 @@ function ListFooterComponent({ children }) {
 const styles = StyleSheet.create({
   separator: {
     width: '100%',
-    height: 70,
+    height: 90,
     backgroundColor: colors.light,
     alignContent: 'center',
     alignItems: 'center',
+    paddingTop: 20,
     paddingBottom: 50,
   },
 });

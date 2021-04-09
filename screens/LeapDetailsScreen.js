@@ -1,5 +1,5 @@
 import Clipboard from 'expo-clipboard';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import favoriteApi from '../api/saveLeapAsFavorite';
 import AuthContext from '../auth/context';
@@ -13,6 +13,7 @@ import colors from '../config/colors';
 import routes from '../navigation/routes';
 
 function LeapDetailsScreen({ route, navigation }) {
+  const [copied, setCopied] = useState(true);
   const authContext = useContext(AuthContext);
   const usernameContext = useContext(UsernameContext);
   const locationsContext = useContext(LocationsContext);
@@ -22,6 +23,13 @@ function LeapDetailsScreen({ route, navigation }) {
     (location) => location.id === listing.locationId,
   )[0];
   // const [string, setString] = useState('');
+
+  function clipboard() {
+    setCopied(true);
+    setTimeout(function () {
+      setCopied(false);
+    }, 1000);
+  }
 
   return (
     <Screen>
@@ -51,6 +59,11 @@ function LeapDetailsScreen({ route, navigation }) {
       <ScrollView>
         {/* <Image style={styles.image} source={require('../assets/jacket.jpg')} /> */}
         <View style={styles.detailsContainer}>
+          {copied && (
+            <View style={styles.copy}>
+              <Text style={styles.email}>Copied {listing.email}</Text>
+            </View>
+          )}
           <Text style={styles.title}>{listing.title}</Text>
           <Text style={styles.description}>{listing.description}</Text>
           <View style={styles.userContainer}>
@@ -81,8 +94,8 @@ function LeapDetailsScreen({ route, navigation }) {
 
                 Clipboard.setString(email);
                 // const text = await Clipboard.getStringAsync();
-
-                alert(`Copied ${email}:)`);
+                clipboard();
+                // alert(`Copied ${email}:)`);
               }}
             />
             <ListItem
@@ -107,6 +120,7 @@ function LeapDetailsScreen({ route, navigation }) {
               }
             />
           </View>
+          {/* {copied && <Text>Copied {listing.email}</Text>} */}
         </View>
       </ScrollView>
     </Screen>
@@ -115,6 +129,7 @@ function LeapDetailsScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   detailsContainer: {
+    position: 'relative',
     padding: 20,
   },
   image: {
@@ -140,6 +155,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     right: 15,
+  },
+  copy: {
+    backgroundColor: 'rgba(72, 255, 150, 0.8)',
+    borderRadius: 10,
+    opacity: 0.2,
+    zIndex: 3,
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+  },
+  email: {
+    color: colors.dark,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });
 

@@ -28,7 +28,7 @@ const menuItems = [
   {
     title: 'Delete Account',
     icon: {
-      name: 'person_remove',
+      name: 'account-cancel',
       backgroundColor: colors.third,
     },
     targetScreen: routes.DELETE,

@@ -4,6 +4,7 @@ import {
   FlatList,
   Modal,
   StyleSheet,
+  Text,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -20,12 +21,12 @@ import NumOfLeapsContext from '../auth/numOfLeapsContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
 import CategoryPickerItem from '../components/CategoryPickerItem';
-import EndIndicator from '../components/EndIndicator';
 import { Form, FormPicker as Picker, SubmitButton } from '../components/forms';
 import Icon from '../components/Icon';
 import { ListItem } from '../components/lists';
 import LeapItemSeparator from '../components/lists/LeapItemSeparator';
 import ListFooterComponent from '../components/lists/ListFooterComponent';
+import NoInternetIndicator from '../components/noInternetAnimation';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
 import AppText from '../components/Text';
@@ -95,7 +96,9 @@ function LeapsScreen({ navigation }) {
   if (!netInfo.isInternetReachable) {
     return (
       <Screen>
-        <AppText>No internet connection</AppText>
+        <View>
+          <NoInternetIndicator />
+        </View>
       </Screen>
     );
   }
@@ -199,10 +202,10 @@ function LeapsScreen({ navigation }) {
                 // children={<Text>Loading...</Text>}
                 children={<ActivityIndicator visible={true} />}
               />
-            ) : loadingMore && numOfLeaps === leaps.length ? (
+            ) : numOfLeaps === leaps.length ? (
               <ListFooterComponent
-                // children={<Text>This is the end!</Text>}
-                children={<EndIndicator visible={true} />}
+                children={<Text>This is the end!</Text>}
+                // children={<EndIndicator visible={true} />}
               />
             ) : (
               <ListFooterComponent />

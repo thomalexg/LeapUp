@@ -1,6 +1,6 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import getLeapsByUsernameApi from '../api/getLeapsByUsername';
 import logoutApi from '../api/logout';
 import CategoriesContext from '../auth/categoriesContext';
@@ -8,7 +8,6 @@ import AuthContext from '../auth/context';
 import UsernameContext from '../auth/usernameContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
-import EndIndicator from '../components/EndIndicator';
 import Icon from '../components/Icon';
 import { ListItem } from '../components/lists';
 import LeapItemSeparator from '../components/lists/LeapItemSeparator';
@@ -140,12 +139,11 @@ function LeapsOfUser({ navigation }) {
               // children={<Text>Loading...</Text>}
               children={<ActivityIndicator visible={true} />}
             />
-          ) : loading && numOfLeaps === leaps.length ? (
-            <ListFooterComponent
-              // children={<Text>This is the end!</Text>}
-              children={<EndIndicator visible={true} />}
-            />
+          ) : numOfLeaps === leaps.length ? (
+            <ListFooterComponent children={<Text>This is the end!</Text>} />
           ) : (
+            //   children={<EndIndicator visible={true} />}
+
             <ListFooterComponent />
           )
         }

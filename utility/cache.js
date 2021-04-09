@@ -45,6 +45,7 @@ const get = async (key, expiryInMinutes) => {
 const deleteUser = async (key) => {
   try {
     const noUser = await AsyncStorage.removeItem(prefix + key);
+    console.log('user.got deleted');
     return noUser;
   } catch (error) {
     console.log(error);
