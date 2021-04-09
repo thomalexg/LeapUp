@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Yup from 'yup';
 import categoriesApi from '../api/categories';
@@ -73,52 +73,51 @@ function LeapAddScreen() {
 
   return (
     <Screen style={styles.container}>
-      <KeyboardAwareScrollView extraHeight={600}>
-        <UploadScreen
-          onDone={() => setUploadVisible(false)}
-          progress={progress}
-          visible={uploadVisible}
-        />
-        <Form
-          initialValues={{
-            title: '',
-            location: '',
-            description: '',
-            category: null,
-          }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <FormField maxLength={255} name="title" placeholder="Title" />
-          <SearchbarDropdown
-            name="location"
-            numberOfColumns={1}
-            items={locations}
-            placeholder="Search for your location"
-            cityReset={cityReset}
-            setCityReset={setCityReset}
-
-            // onBlur={() => setIsSearching(false)}
-            // setStadt={setStadt}
+      <View>
+        <KeyboardAwareScrollView extraHeight={600} nestedScrollEnabled={true}>
+          <UploadScreen
+            onDone={() => setUploadVisible(false)}
+            progress={progress}
+            visible={uploadVisible}
           />
-          <Picker
-            items={categories}
-            name="category"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Category"
-            width="50%"
-          />
-          <FormField
-            maxLength={1000}
-            multiline
-            name="description"
-            numberOfLines={3}
-            placeholder="Description"
-          />
-          <SubmitButton title="Post" />
-        </Form>
-      </KeyboardAwareScrollView>
+          <Form
+            initialValues={{
+              title: '',
+              location: '',
+              description: '',
+              category: null,
+            }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <FormField maxLength={255} name="title" placeholder="Title" />
+            <SearchbarDropdown
+              name="location"
+              numberOfColumns={1}
+              items={locations}
+              placeholder="Search for your location"
+              cityReset={cityReset}
+              setCityReset={setCityReset}
+            />
+            <Picker
+              items={categories}
+              name="category"
+              numberOfColumns={3}
+              PickerItemComponent={CategoryPickerItem}
+              placeholder="Category"
+              width="50%"
+            />
+            <FormField
+              maxLength={1000}
+              multiline
+              name="description"
+              numberOfLines={3}
+              placeholder="Description"
+            />
+            <SubmitButton title="Post" />
+          </Form>
+        </KeyboardAwareScrollView>
+      </View>
     </Screen>
   );
 }

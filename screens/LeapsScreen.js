@@ -81,7 +81,7 @@ function LeapsScreen({ navigation }) {
   }, [leapsFromContext]);
 
   const handleSubmit = (filter) => {
-    console.log('filter', filter);
+    // console.log('filter', filter);
     setModalVisible(false);
     // setLeaps([]);
     filterCategoryContext.setFilterCategory(
@@ -92,12 +92,13 @@ function LeapsScreen({ navigation }) {
     );
     leapsStateContext.setIsLeapsStateStale(true);
   };
-
+  console.log('netInfo', netInfo.isInternetReachable);
   if (!netInfo.isInternetReachable) {
     return (
       <Screen>
-        <View>
-          <NoInternetIndicator />
+        <View style={styles.internet}>
+          <Text style={styles.internetText}>No Internet</Text>
+          <NoInternetIndicator visible={true} />
         </View>
       </Screen>
     );
@@ -157,13 +158,13 @@ function LeapsScreen({ navigation }) {
 
               loadMoreContext.setLoadMore(true);
               // loadLeaps(true);
-              console.log('Running');
+              // console.log('Running');
               loadingMoreContext.setLoadingMore(false);
             }
           }}
           onEndReachedThreshold={0.5}
           onRefresh={() => {
-            console.log('Running refresh');
+            // console.log('Running refresh');
             return leapsStateContext.setIsLeapsStateStale(true);
           }}
           // data={leaps.sort((a, b) => a.id < b.id)}
@@ -297,13 +298,19 @@ const styles = StyleSheet.create({
     height: 500,
     backgroundColor: colors.light,
   },
+  internet: {
+    position: 'relative',
+    flex: 1,
+    textAlign: 'center',
+  },
+  internetText: {},
 });
 
 export default LeapsScreen;
 
 // const loadLeaps = async (loadMore) => {
 //   setLoading(true);
-//   console.log('location:', filterLocation);
+// console.log('location:', filterLocation);
 //   console.log('category:', filterCategory);
 
 //   // const response = await leapsApi.getLeaps();

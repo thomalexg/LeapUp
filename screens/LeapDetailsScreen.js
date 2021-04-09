@@ -13,7 +13,7 @@ import colors from '../config/colors';
 import routes from '../navigation/routes';
 
 function LeapDetailsScreen({ route, navigation }) {
-  const [copied, setCopied] = useState(true);
+  const [copied, setCopied] = useState(false);
   const authContext = useContext(AuthContext);
   const usernameContext = useContext(UsernameContext);
   const locationsContext = useContext(LocationsContext);
@@ -56,14 +56,14 @@ function LeapDetailsScreen({ route, navigation }) {
           </View>
         </TouchableHighlight>
       </View>
+      {copied && (
+        <View style={styles.copy}>
+          <Text style={styles.email}>Copied {listing.email}</Text>
+        </View>
+      )}
       <ScrollView>
         {/* <Image style={styles.image} source={require('../assets/jacket.jpg')} /> */}
         <View style={styles.detailsContainer}>
-          {copied && (
-            <View style={styles.copy}>
-              <Text style={styles.email}>Copied {listing.email}</Text>
-            </View>
-          )}
           <Text style={styles.title}>{listing.title}</Text>
           <Text style={styles.description}>{listing.description}</Text>
           <View style={styles.userContainer}>
@@ -157,12 +157,11 @@ const styles = StyleSheet.create({
     right: 15,
   },
   copy: {
-    backgroundColor: 'rgba(72, 255, 150, 0.8)',
+    backgroundColor: 'rgba(72, 255, 150, 1)',
     borderRadius: 10,
-    opacity: 0.2,
     zIndex: 3,
     position: 'absolute',
-    bottom: 0,
+    bottom: 40,
     alignSelf: 'center',
   },
   email: {

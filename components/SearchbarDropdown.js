@@ -23,6 +23,8 @@ function SearchbarDropdown({
   placeholder,
   cityReset,
   setCityReset,
+  ContentThatGoesAboveTheFlatList,
+  ContentThatGoesBelowTheFlatList,
 }) {
   const { setFieldValue, errors, touched } = useFormikContext();
 

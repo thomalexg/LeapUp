@@ -49,7 +49,7 @@ export default App = () => {
   // console.log('location', locations);
   useEffect(() => {
     (async () => {
-      console.log('THIS SHOUL ONLY RUN ONCE!!!!11!1');
+      // console.log('THIS SHOUL ONLY RUN ONCE!!!!11!1');
       setUser(await cache.get('user', 43200));
       const locationsObject = await locationsApi.getLocations();
       const locationsArr = locationsObject.data;
@@ -58,7 +58,7 @@ export default App = () => {
       const getCategories = await categoriesApi.getCategories();
       // console.log('The categories should be here:', getCategories.data);
       setCategories(getCategories.data);
-      console.log('Inside useEffect');
+      // console.log('Inside useEffect');
     })();
   }, [setUser, setCategories, setLocations, cache, locationsApi]);
 
@@ -113,7 +113,7 @@ export default App = () => {
 
     if (response.data?.errors?.[0]?.message === 'no valid token') {
       const deletedUser = await cache.deleteUser('user');
-      console.log('deleteduser', deletedUser);
+      // console.log('deleteduser', deletedUser);
       await setUser(deletedUser);
       await logoutApi.logout();
     }
@@ -121,7 +121,7 @@ export default App = () => {
     if (!response.ok) {
       setLoading(false);
       setLoadingMore(false);
-      console.log('response is not ok', response);
+      // console.log('response is not ok', response);
       return setError(true);
     }
     // setLoading(false);
@@ -138,10 +138,10 @@ export default App = () => {
       // console.log('oldLeaps', oldLeaps.length);
       // console.log('alteredLeaps', alteredLeaps.length);
       const newLeaps = oldLeaps.concat(alteredLeaps);
-      console.log('loadMore in loadLeaps');
+      // console.log('loadMore in loadLeaps');
       setLoadMore(undefined);
-      console.log('length of new leeps (!==5)', newLeaps.length);
-      console.log('numofLeaps', numOfLeaps);
+      // console.log('length of new leeps (!==5)', newLeaps.length);
+      // console.log('numofLeaps', numOfLeaps);
       setIsLeapsStateStale(false);
       setLoading(false);
       setLoadingMore(false);

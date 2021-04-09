@@ -24,7 +24,7 @@ import cache from '../utility/cache';
 function MyLeapsScreen({ navigation }) {
   const usernameContext = useContext(UsernameContext);
   const authContext = useContext(AuthContext);
-  const [leaps, setLeaps] = useState([]);
+  const [leaps, setLeaps] = useState(undefined);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -46,7 +46,7 @@ function MyLeapsScreen({ navigation }) {
     // const response = await leapsApi.getLeaps();
     const response = await getFavoriteLeapsApi.getFavoriteLeaps(
       authContext.user.value.id,
-      loadMore && leaps !== [] ? leaps?.slice(-1)[0].id : undefined,
+      loadMore && leaps ? leaps?.slice(-1)[0].id : undefined,
     );
     // console.log('response of leaps', response.data.errors);
     setLoading(false);
@@ -67,7 +67,7 @@ function MyLeapsScreen({ navigation }) {
     setError(false);
     if (loadMore) {
       const oldLeaps = [...leaps];
-      const alteredLeaps = response.data.leaps.map((leap) => ({
+      const alteredLeaps = response.data.leaps?.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -81,7 +81,7 @@ function MyLeapsScreen({ navigation }) {
     }
 
     setLeaps(
-      response.data.leaps.map((leap) => ({
+      response.data.leaps?.map((leap) => ({
         ...leap,
         category: categories.find(
           (category) => category.id === leap.categoryId,
@@ -148,12 +148,12 @@ function MyLeapsScreen({ navigation }) {
         ItemSeparatorComponent={LeapItemSeparator}
         // ListFooterComponent={ListFooterComponent}
         ListFooterComponent={() =>
-          loading && numOfLeaps !== leaps.length ? (
+          loading && numOfLeaps !== leaps?.length ? (
             <ListFooterComponent
               // children={<Text>Loading...</Text>}
               children={<ActivityIndicator visible={true} />}
             />
-          ) : loading && numOfLeaps === leaps.length ? (
+          ) : loading && numOfLeaps === leaps?.length ? (
             <ListFooterComponent
               // children={<Text>This is the end!</Text>}
               children={<EndIndicator visible={true} />}

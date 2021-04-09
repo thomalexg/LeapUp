@@ -7,6 +7,12 @@ export default function NoInternetIndicator({ visible = false }) {
     <LottieView
       autoPlay
       loop
+      style={{
+        width: 400,
+        height: 400,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
       source={require('../assets/animations/internet.json')}
     />
   );
