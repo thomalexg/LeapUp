@@ -14,6 +14,7 @@ import routes from '../navigation/routes';
 
 function LeapDetailsScreen({ route, navigation }) {
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const authContext = useContext(AuthContext);
   const usernameContext = useContext(UsernameContext);
   const locationsContext = useContext(LocationsContext);
@@ -30,6 +31,12 @@ function LeapDetailsScreen({ route, navigation }) {
       setCopied(false);
     }, 1000);
   }
+  function favourit() {
+    setSaved(true);
+    setTimeout(function () {
+      setSaved(false);
+    }, 1000);
+  }
 
   return (
     <Screen>
@@ -41,7 +48,8 @@ function LeapDetailsScreen({ route, navigation }) {
               authContext.user.value.id,
               listing.id,
             );
-            alert('Saved as favorite');
+            favourit();
+            // alert('Saved as favorite');
           }}
 
           // onPress={() => alert('Pressed')}
@@ -59,6 +67,11 @@ function LeapDetailsScreen({ route, navigation }) {
       {copied && (
         <View style={styles.copy}>
           <Text style={styles.email}>Copied {listing.email}</Text>
+        </View>
+      )}
+      {saved && (
+        <View style={styles.copy}>
+          <Text style={styles.email}>Leap is now in your favourites!</Text>
         </View>
       )}
       <ScrollView>

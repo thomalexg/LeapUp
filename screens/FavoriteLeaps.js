@@ -1,6 +1,6 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import deleteFavoriteLeapApi from '../api/deleteFavoriteLeap';
 import getFavoriteLeapsApi from '../api/getFavoriteLeaps';
 import logoutApi from '../api/logout';
@@ -9,7 +9,6 @@ import AuthContext from '../auth/context';
 import UsernameContext from '../auth/usernameContext';
 import ActivityIndicator from '../components/ActivityIndicator';
 import AppButton from '../components/Button';
-import EndIndicator from '../components/EndIndicator';
 import Icon from '../components/Icon';
 import { ListItem, ListItemDeleteAction } from '../components/lists';
 import LeapItemSeparator from '../components/lists/LeapItemSeparator';
@@ -63,6 +62,7 @@ function MyLeapsScreen({ navigation }) {
       setLoading(false);
       return setError(true);
     }
+    console.log('count', response.data.count);
     setNumOfLeaps(response.data.count);
     setError(false);
     if (loadMore) {
@@ -98,6 +98,7 @@ function MyLeapsScreen({ navigation }) {
     );
     loadLeaps();
   };
+  console.log('length', leaps?.length);
   return (
     <Screen style={styles.screen}>
       {error && (
@@ -148,15 +149,15 @@ function MyLeapsScreen({ navigation }) {
         ItemSeparatorComponent={LeapItemSeparator}
         // ListFooterComponent={ListFooterComponent}
         ListFooterComponent={() =>
-          loading && numOfLeaps !== leaps?.length ? (
+          loading ? (
             <ListFooterComponent
               // children={<Text>Loading...</Text>}
               children={<ActivityIndicator visible={true} />}
             />
-          ) : loading && numOfLeaps === leaps?.length ? (
+          ) : numOfLeaps === leaps?.length ? (
             <ListFooterComponent
-              // children={<Text>This is the end!</Text>}
-              children={<EndIndicator visible={true} />}
+              children={<Text>This is the end!</Text>}
+              // children={<EndIndicator visible={true} />}
             />
           ) : (
             <ListFooterComponent />
