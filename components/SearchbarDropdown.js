@@ -2,17 +2,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFormikContext } from 'formik';
 import { matchSorter } from 'match-sorter';
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import LocationsContext from '../auth/locationContext';
 import defaultStyles from '../config/styles';
 import { ErrorMessage } from './forms';
-import ListDropdown from './lists/ListDropdown';
+import { ListItem } from './lists';
 
 function SearchbarDropdown({
   icon,
@@ -84,30 +78,20 @@ function SearchbarDropdown({
           // onBlur={onBlur}
         />
       </View>
-      {isSearching && (
-        <View style={styles.list}>
-          <FlatList
-            data={filteredLocations}
-            keyExtractor={(item) => '?' + item.id.toString()}
-            numColumns={numberOfColumns}
-            renderItem={(item) => (
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    // console.log('item.item', item.item);
-                    setCity(item.item.city);
-                    setFieldValue('location', item.item);
-
-                    setIsSearching(false);
-                  }}
-                >
-                  <ListDropdown item={item} />
-                </TouchableOpacity>
-              </View>
-            )}
-          />
-        </View>
-      )}
+      {isSearching &&
+        filteredLocations.map((v, i) => (
+          <View>
+            <ListItem
+              key={i + v.city}
+              title={v.city}
+              onPress={() => {
+                setCity(v.city);
+                setFieldValue('location', v);
+                setIsSearching(false);
+              }}
+            ></ListItem>
+          </View>
+        ))}
       <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   );

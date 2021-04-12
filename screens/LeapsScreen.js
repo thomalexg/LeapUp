@@ -92,7 +92,7 @@ function LeapsScreen({ navigation }) {
     );
     leapsStateContext.setIsLeapsStateStale(true);
   };
-  console.log('netInfo', netInfo.isInternetReachable);
+
   if (!netInfo.isInternetReachable) {
     return (
       <Screen>
