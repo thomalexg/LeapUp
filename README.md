@@ -4,6 +4,8 @@
 
 LeapUp is an App to post things you want to learn and to find people who want to learn the same. It is written in 100% JavaScript using React Native.
 
+Also checkout my video that shows all the features: https://youtu.be/xufgJSZEykc
+
 The Backend is created as a Next.js project. You can check it out here: https://github.com/thomalexg/LeapUp-API
 
 
