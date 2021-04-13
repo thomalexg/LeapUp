@@ -6,7 +6,7 @@ LeapUp is an App to post things you want to learn and to find people who want to
 
 Also checkout my video that shows all the features: https://youtu.be/xufgJSZEykc
 
-The Backend is created as a Next.js project. You can check it out here: https://github.com/thomalexg/LeapUp-API
+The Backend is created as a Next.js project. You can check it out here: https://github.com/thomalexg/LeapUp-API or https://leapup-api.herokuapp.com/
 
 
 Add Leaps(post something):
