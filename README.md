@@ -28,19 +28,29 @@ Account Screen:
 
 
 # Welcome Screen
+![welcome](https://user-images.githubusercontent.com/67371232/114532147-d92d3c00-9c4c-11eb-98d0-c59ac8593d68.jpeg)![account](https://user-images.githubusercontent.com/67371232/114532193-e5b19480-9c4c-11eb-9c61-bc8498723aee.jpeg)
 
 # Login Screen
+![login](https://user-images.githubusercontent.com/67371232/114532267-f5c97400-9c4c-11eb-9af4-e28147fc02d3.jpeg)
 
 # Register Screen
+![register](https://user-images.githubusercontent.com/67371232/114532273-f7933780-9c4c-11eb-94ea-1828300cb751.jpeg)
 
 # Leaps Feed
+![Feed](https://user-images.githubusercontent.com/67371232/114532239-efd39300-9c4c-11eb-884e-12b22558ed9f.jpeg)
 
 # Leap
+![Leap](https://user-images.githubusercontent.com/67371232/114532256-f3671a00-9c4c-11eb-8a8d-0e495630aa7a.jpeg)
 
 # Filter
+![filter](https://user-images.githubusercontent.com/67371232/114532243-f19d5680-9c4c-11eb-8eea-7ab5eac7eb4b.jpeg)
 
 # Create Leap
+![add](https://user-images.githubusercontent.com/67371232/114532210-e8ac8500-9c4c-11eb-93fd-ff1ef74f98e9.jpeg)
 
 # Account
+![account](https://user-images.githubusercontent.com/67371232/114532228-ed713900-9c4c-11eb-8814-49449a134a7b.jpeg)
 
 # Account settings
+![settings](https://user-images.githubusercontent.com/67371232/114532279-f95cfb00-9c4c-11eb-918f-d5c3c2833c35.jpeg)
+
