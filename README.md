@@ -6,6 +6,8 @@ LeapUp is an App to post things you want to learn and to find people who want to
 
 Also checkout my video that shows all the features: https://youtu.be/xufgJSZEykc
 
+Or you can try the App on your phone by installing the Expo Go App, more info here: https://expo.io/@thomalex/projects/LeapUp?release-channel=staging
+
 The Backend is created as a Next.js project. You can check it out here: https://github.com/thomalexg/LeapUp-API or https://leapup-api.herokuapp.com/
 
 
