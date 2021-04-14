@@ -2,7 +2,7 @@
   "expo": {
     "name": "LeapUp",
     "slug": "LeapUp",
-    "privacy": "unlisted",
+    "privacy": "puplic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo-new.png",
@@ -15,15 +15,6 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.codewithmosh.donewithit",
-      "buildNumber": "1.0.0"
-    },
-    "android": {
-      "package": "com.codewithmosh.donewithit",
-      "versionCode": 1
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     }
