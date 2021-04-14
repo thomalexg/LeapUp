@@ -80,9 +80,9 @@ function SearchbarDropdown({
       </View>
       {isSearching &&
         filteredLocations.map((v, i) => (
-          <View>
+          <View key={v.id}>
             <ListItem
-              key={i + v.city}
+              key={v.city}
               title={v.city}
               onPress={() => {
                 setCity(v.city);

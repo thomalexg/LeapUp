@@ -28,7 +28,8 @@ function LeapAddScreen() {
       user.value.username,
     );
 
-    if (!result) {
+    if (!result.ok) {
+      console.log(result.data?.errors);
       return alert('Could not delete account :(');
     }
     const deletedUser = await cache.deleteUser('user');

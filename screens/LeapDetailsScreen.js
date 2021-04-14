@@ -15,6 +15,8 @@ import routes from '../navigation/routes';
 function LeapDetailsScreen({ route, navigation }) {
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [alreadySaved, setAlreadySaved] = useState(false);
   const authContext = useContext(AuthContext);
   const usernameContext = useContext(UsernameContext);
   const locationsContext = useContext(LocationsContext);
@@ -37,19 +39,49 @@ function LeapDetailsScreen({ route, navigation }) {
       setSaved(false);
     }, 1000);
   }
+  function already() {
+    setAlreadySaved(true);
+    setTimeout(function () {
+      setAlreadySaved(false);
+    }, 1000);
+  }
 
+  function failedToSafe() {
+    setFailed(true);
+    setTimeout(function () {
+      setFailed(false);
+    }, 1000);
+  }
+
+  async function saveAsFav() {
+    const response = await favoriteApi.saveLeapAsFavorite(
+      authContext.user.value.id,
+      listing.id,
+    );
+    console.log('save it', response);
+    if (response.data?.errors?.[0]?.message === 'leap already saved') {
+      already();
+      return;
+    }
+    if (!response.ok) {
+      failedToSafe();
+      return;
+    }
+    favourit();
+  }
   return (
     <Screen>
       <View style={styles.icon}>
         <TouchableHighlight
           underlayColor={colors.light}
           onPress={() => {
-            favoriteApi.saveLeapAsFavorite(
-              authContext.user.value.id,
-              listing.id,
-            );
-            favourit();
-            // alert('Saved as favorite');
+            saveAsFav();
+            // favoriteApi.saveLeapAsFavorite(
+            //   authContext.user.value.id,
+            //   listing.id,
+            // );
+            // favourit();
+            // // alert('Saved as favorite');
           }}
 
           // onPress={() => alert('Pressed')}
@@ -72,6 +104,16 @@ function LeapDetailsScreen({ route, navigation }) {
       {saved && (
         <View style={styles.copy}>
           <Text style={styles.email}>Leap is now in your favourites!</Text>
+        </View>
+      )}
+      {alreadySaved && (
+        <View style={styles.copy}>
+          <Text style={styles.email}>Leap is already in your favourites!</Text>
+        </View>
+      )}
+      {failed && (
+        <View style={styles.copy}>
+          <Text style={styles.email}>Failed to save leap, try again!</Text>
         </View>
       )}
       <ScrollView>

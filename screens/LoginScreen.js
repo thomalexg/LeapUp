@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as Yup from 'yup';
 import loginApi from '../api/login';
 import AuthContext from '../auth/context';
+import LeapsStateContext from '../auth/leapsStateContext';
 import {
   ErrorMessage,
   Form,
@@ -19,6 +20,7 @@ const validationSchema = Yup.object().shape({
 
 function LoginScreen() {
   const authContext = useContext(AuthContext);
+  const leapsStateContext = useContext(LeapsStateContext);
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleSubmit = async (user) => {
@@ -31,6 +33,7 @@ function LoginScreen() {
     await cache.store('user', result.data.user);
     const getUser = await cache.get('user', 43200);
     authContext.setUser(getUser);
+    leapsStateContext.setIsLeapsStateStale(true);
     setLoginFailed(false);
   };
 

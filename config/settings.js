@@ -2,13 +2,13 @@ import Constants from 'expo-constants';
 
 const settings = {
   dev: {
-    apiUrl: 'http://192.168.0.80:3000/api',
+    apiUrl: 'https://leapup-api.herokuapp.com/api',
   },
   staging: {
-    apiUrl: 'http://192.168.0.80:3000/api',
+    apiUrl: 'https://leapup-api.herokuapp.com/api',
   },
   prod: {
-    apiUrl: 'http://192.168.0.80:3000/api',
+    apiUrl: 'https://leapup-api.herokuapp.com/api',
   },
 };
 

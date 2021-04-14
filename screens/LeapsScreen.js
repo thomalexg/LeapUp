@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CategoriesContext from '../auth/categoriesContext';
 import ErrorContext from '../auth/errorContext';
 import FilterCategoryContext from '../auth/filterCategoryContext';
@@ -223,54 +224,55 @@ function LeapsScreen({ navigation }) {
             color="third"
             onPress={() => setModalVisible(false)}
           />
-          <Form
-            initialValues={{
-              category: filterCategoryContext.filterCategory,
-              location: filterLocationContext.filterLocation,
-            }}
-            onSubmit={handleSubmit}
-          >
-            <Picker
-              items={categories}
-              name="category"
-              numberOfColumns={3}
-              PickerItemComponent={CategoryPickerItem}
-              placeholder={
-                filterCategoryContext.filterCategory === '' ||
-                filterCategoryContext.filterCategory === undefined
-                  ? 'Category'
-                  : filterCategoryContext.filterCategory.category
-              }
-              width="50%"
+          <KeyboardAwareScrollView extraHeight={600} nestedScrollEnabled={true}>
+            <Form
+              initialValues={{
+                category: filterCategoryContext.filterCategory,
+                location: filterLocationContext.filterLocation,
+              }}
+              onSubmit={handleSubmit}
+            >
+              <Picker
+                items={categories}
+                name="category"
+                numberOfColumns={3}
+                PickerItemComponent={CategoryPickerItem}
+                placeholder={
+                  filterCategoryContext.filterCategory === '' ||
+                  filterCategoryContext.filterCategory === undefined
+                    ? 'Category'
+                    : filterCategoryContext.filterCategory.category
+                }
+                width="50%"
+              />
+              <SearchbarDropdown
+                name="location"
+                numberOfColumns={1}
+                items={locations}
+                placeholder={
+                  filterLocationContext.filterLocation === '' ||
+                  filterLocationContext.filterLocation === undefined
+                    ? 'Search for your location'
+                    : filterLocationContext.filterLocation.city
+                }
+              />
+
+              <SubmitButton title="Apply Filter" />
+            </Form>
+
+            <AppButton
+              title="Reset Filter"
+              color="third"
+              onPress={() => {
+                filterCategoryContext.setFilterCategory('');
+                filterLocationContext.setFilterLocation('');
+
+                // setLeaps([]);
+                leapsStateContext.setIsLeapsStateStale(true);
+                setModalVisible(false);
+              }}
             />
-            <SearchbarDropdown
-              name="location"
-              numberOfColumns={1}
-              items={locations}
-              placeholder={
-                filterLocationContext.filterLocation === '' ||
-                filterLocationContext.filterLocation === undefined
-                  ? 'Search for your location'
-                  : filterLocationContext.filterLocation.city
-              }
-              // setStadt={setStadt}
-            />
-
-            <SubmitButton title="Apply Filter" />
-          </Form>
-
-          <AppButton
-            title="Reset Filter"
-            color="third"
-            onPress={() => {
-              filterCategoryContext.setFilterCategory('');
-              filterLocationContext.setFilterLocation('');
-
-              // setLeaps([]);
-              leapsStateContext.setIsLeapsStateStale(true);
-              setModalVisible(false);
-            }}
-          />
+          </KeyboardAwareScrollView>
         </Screen>
       </Modal>
     </Screen>
