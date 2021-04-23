@@ -38,7 +38,6 @@ const menuItems = [
 
 function AccountScreen({ navigation }) {
   const authContext = useContext(AuthContext);
-  // console.log('Account user', authContext.user);
   useEffect(() => {
     (async () => {
       authContext.setUser(await cache.get('user', 5));
@@ -51,7 +50,6 @@ function AccountScreen({ navigation }) {
           showIcon={true}
           title={authContext?.user?.value.username || 'No username'}
           subTitle={authContext?.user?.value.email || 'No email'}
-          // image={require('../assets/thomas.jpg')}
           IconComponent={<Icon name="account" backgroundColor={colors.third} />}
           onPress={() => navigation.navigate(routes.SETTINGS)}
         />
@@ -71,7 +69,6 @@ function AccountScreen({ navigation }) {
                   backgroundColor={item.icon.backgroundColor}
                 />
               }
-              // onPress={navigation.navigate(routes.MESSAGES)}
               onPress={() => navigation.navigate(item.targetScreen)}
             />
           )}
@@ -83,7 +80,6 @@ function AccountScreen({ navigation }) {
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
         onPress={async () => {
           const deletedUser = await cache.deleteUser('user');
-          console.log('deleteduser', deletedUser);
           await logoutApi.logout();
           authContext.setUser(deletedUser);
         }}

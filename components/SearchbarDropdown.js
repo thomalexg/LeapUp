@@ -17,8 +17,6 @@ function SearchbarDropdown({
   placeholder,
   cityReset,
   setCityReset,
-  ContentThatGoesAboveTheFlatList,
-  ContentThatGoesBelowTheFlatList,
 }) {
   const { setFieldValue, errors, touched } = useFormikContext();
 
@@ -47,73 +45,62 @@ function SearchbarDropdown({
     setFilteredLocations(
       matchSorter(locations, search, { keys: ['city', 'country', 'state'] }),
     );
-    // setFilteredLocations(
-    //   locations.filter(
-    //     (location) =>
-    //       location.city.toLowerCase().indexOf(search) > -1 ||
-    //       location.country.toLowerCase().indexOf(search) > -1 ||
-    //       location.state.toLowerCase().indexOf(search) > -1,
-    //   ),
-    // );
-  };
-  // console.log('filteredLocations:', filteredLocations);
-  return (
-    <>
-      <View style={[styles.container, { width }]}>
-        {icon && (
-          <MaterialCommunityIcons
-            name={icon}
-            size={20}
-            color={defaultStyles.colors.medium}
-            style={styles.icon}
+
+    return (
+      <>
+        <View style={[styles.container, { width }]}>
+          {icon && (
+            <MaterialCommunityIcons
+              name={icon}
+              size={20}
+              color={defaultStyles.colors.medium}
+              style={styles.icon}
+            />
+          )}
+
+          <TextInput
+            style={[defaultStyles.text]}
+            placeholder={placeholder}
+            onChangeText={onSearch}
+            value={city}
           />
-        )}
+        </View>
+        {isSearching &&
+          filteredLocations.map((v, i) => (
+            <View key={v.id}>
+              <ListItem
+                key={v.city}
+                title={v.city}
+                onPress={() => {
+                  setCity(v.city);
+                  setFieldValue('location', v);
+                  setIsSearching(false);
+                }}
+              ></ListItem>
+            </View>
+          ))}
+        <ErrorMessage error={errors[name]} visible={touched[name]} />
+      </>
+    );
+  };
 
-        <TextInput
-          style={[defaultStyles.text]}
-          placeholder={placeholder}
-          onChangeText={onSearch}
-          value={city}
-          // onBlur={() => setIsSearching(false)}
-          // onBlur={onBlur}
-        />
-      </View>
-      {isSearching &&
-        filteredLocations.map((v, i) => (
-          <View key={v.id}>
-            <ListItem
-              key={v.city}
-              title={v.city}
-              onPress={() => {
-                setCity(v.city);
-                setFieldValue('location', v);
-                setIsSearching(false);
-              }}
-            ></ListItem>
-          </View>
-        ))}
-      <ErrorMessage error={errors[name]} visible={touched[name]} />
-    </>
-  );
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: defaultStyles.colors.light,
+      borderRadius: 25,
+      flexDirection: 'row',
+      padding: 15,
+      marginVertical: 10,
+    },
+    icon: {
+      marginRight: 10,
+    },
+    textInput: {},
+    list: {
+      backgroundColor: 'whitesmoke',
+      position: 'relative',
+      zIndex: 11,
+    },
+  });
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: defaultStyles.colors.light,
-    borderRadius: 25,
-    flexDirection: 'row',
-    padding: 15,
-    marginVertical: 10,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  textInput: {},
-  list: {
-    backgroundColor: 'whitesmoke',
-    position: 'relative',
-    zIndex: 11,
-  },
-});
-
 export default SearchbarDropdown;

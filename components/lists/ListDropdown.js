@@ -4,8 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import colors from '../../config/colors';
 import Text from '../Text';
 
-function ListDropdown({ item, onPress }) {
-  // console.log('city', item.item.city);
+function ListDropdown({ item }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.detailsContainer}>

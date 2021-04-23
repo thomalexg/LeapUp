@@ -9,7 +9,7 @@ import {
   ErrorMessage,
   Form,
   FormField,
-  SubmitButton,
+  SubmitButton
 } from '../components/forms';
 import cache from '../utility/cache';
 
@@ -25,11 +25,9 @@ function LoginScreen() {
 
   const handleSubmit = async (user) => {
     const result = await loginApi.login(user);
-    // console.log('result', result);
     if (!result.ok) {
       return setLoginFailed(true);
     }
-    console.log('Login done');
     await cache.store('user', result.data.user);
     const getUser = await cache.get('user', 43200);
     authContext.setUser(getUser);
@@ -38,7 +36,6 @@ function LoginScreen() {
   };
 
   return (
-    // <Screen style={styles.screen}>
     <KeyboardAwareScrollView extraHeight={600}>
       <Image style={styles.logo} source={require('../assets/logo-new.png')} />
 
@@ -71,7 +68,6 @@ function LoginScreen() {
         <SubmitButton title="Login" />
       </Form>
     </KeyboardAwareScrollView>
-    // </Screen>
   );
 }
 

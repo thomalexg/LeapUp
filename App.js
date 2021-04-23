@@ -46,19 +46,17 @@ export default App = () => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [numOfLeaps, setNumOfLeaps] = useState(6);
-  // console.log('location', locations);
+
   useEffect(() => {
     (async () => {
-      // console.log('THIS SHOUL ONLY RUN ONCE!!!!11!1');
       setUser(await cache.get('user', 43200));
       const locationsObject = await locationsApi.getLocations();
       const locationsArr = locationsObject.data;
-      // console.log('locationsObject', locationsArr);
+
       setLocations(locationsArr);
       const getCategories = await categoriesApi.getCategories();
-      // console.log('The categories should be here:', getCategories.data);
+
       setCategories(getCategories.data);
-      // console.log('Inside useEffect');
     })();
   }, [setUser, setCategories, setLocations, cache, locationsApi]);
 
@@ -66,8 +64,6 @@ export default App = () => {
     if (user && isLeapsStateStale && categories.length > 0 && !loading) {
       loadLeaps(loadMore);
     }
-
-    // if (setIsLeapsStateStale) return loadLeaps();
   }, [
     user,
     categories,
@@ -79,32 +75,10 @@ export default App = () => {
     loading,
   ]);
 
-  // useEffect(() => {
-  //   loadLeaps();
-  // }, [filterCategory, filterLocation]);
-
-  // useEffect(() => {
-  //   console.log('running loadMore');
-  //   console.log('loadMore should be true:', loadMore);
-  //   (() => {
-  //     if (loadMore) return loadLeaps(loadMore);
-  //   })();
-  // }, [loadMore]);
-
-  const getUser = async () => {
-    const response = await cache.get('user', 43200);
-    if (response) return setUser(response);
-    // console.log(response);
-  };
-
   const loadLeaps = async (loadMore) => {
-    // const loadLeaps = useCallback(
-
     setLoading(true);
     setLoadingMore(true);
-    // console.log('location:', filterLocation);
-    // console.log('category:', filterCategory);
-    // console.log('categories', categories);
+
     const response = await getLeapsApi.getfilteredleaps(
       filterCategory?.id,
       filterLocation?.id,
@@ -113,7 +87,7 @@ export default App = () => {
 
     if (response.data?.errors?.[0]?.message === 'no valid token') {
       const deletedUser = await cache.deleteUser('user');
-      // console.log('deleteduser', deletedUser);
+
       await setUser(deletedUser);
       await logoutApi.logout();
     }
@@ -121,10 +95,10 @@ export default App = () => {
     if (!response.ok) {
       setLoading(false);
       setLoadingMore(false);
-      // console.log('response is not ok', response);
+
       return setError(true);
     }
-    // setLoading(false);
+
     setNumOfLeaps(response.data.count);
     setError(false);
     if (loadMore) {
@@ -135,28 +109,17 @@ export default App = () => {
           (category) => category.id === leap.categoryId,
         ),
       }));
-      // console.log('oldLeaps', oldLeaps.length);
-      // console.log('alteredLeaps', alteredLeaps.length);
+
       const newLeaps = oldLeaps.concat(alteredLeaps);
-      // console.log('loadMore in loadLeaps');
+
       setLoadMore(undefined);
-      // console.log('length of new leeps (!==5)', newLeaps.length);
-      // console.log('numofLeaps', numOfLeaps);
+
       setIsLeapsStateStale(false);
       setLoading(false);
       setLoadingMore(false);
       return setLeaps(newLeaps);
     }
 
-    // console.log(
-    //   'length should be 5:',
-    //   response.data.leaps.map((leap) => ({
-    //     ...leap,
-    //     category: categories.find(
-    //       (category) => category.id === leap.categoryId,
-    //     ),
-    //   })).length,
-    // );
     setIsLeapsStateStale(false);
     setLoading(false);
     setLoadingMore(false);
@@ -170,7 +133,6 @@ export default App = () => {
     );
   };
 
-  // console.log('leaps of state in App:', leaps);
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <UsernameContext.Provider value={{ username, setUsername }}>
@@ -197,14 +159,12 @@ export default App = () => {
                             <NavigationContainer>
                               <Stack.Navigator>
                                 {user ? (
-                                  //  <AppNavigator />
                                   <Stack.Screen
                                     name="AppNavigator"
                                     component={AppNavigator}
                                     options={{ headerShown: false }}
                                   />
                                 ) : (
-                                  // <AuthNavigator setUser={setUser} />
                                   <>
                                     <Stack.Screen
                                       name="Welcome"
@@ -237,5 +197,3 @@ export default App = () => {
     </AuthContext.Provider>
   );
 };
-
-// export default App;

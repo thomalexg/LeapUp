@@ -37,7 +37,6 @@ const menuItems = [
 
 function AccountScreen({ navigation }) {
   const authContext = useContext(AuthContext);
-  // console.log('Account user', authContext.user);
   useEffect(() => {
     (async () => {
       authContext.setUser(await cache.get('user', 5));
@@ -60,7 +59,6 @@ function AccountScreen({ navigation }) {
                   backgroundColor={item.icon.backgroundColor}
                 />
               }
-              // onPress={navigation.navigate(routes.MESSAGES)}
               onPress={() => navigation.navigate(item.targetScreen)}
             />
           )}

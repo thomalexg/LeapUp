@@ -62,29 +62,14 @@ function LeapsScreen({ navigation }) {
   const numOfLeapsContext = useContext(NumOfLeapsContext);
   const numOfLeaps = numOfLeapsContext.numOfLeaps;
 
-  // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
-  // let lastLoadedLeapId = '';
-  // const [lastLoadedLeapId, setLastLoadedLeapId] = useState('');
-  // const [loadingMore, setLoadingMore] = useState(false);
 
-  // if (leaps === []) {
-  //   console.log('This shit is running');
-  //   return leapsStateContext.setIsLeapsSateStale(true);
-  // }
-  // console.log('leaps of leapsScreen', leaps);
   useEffect(() => {
-    // console.log('This shit is running');
-    // if (leaps !== []) {
-    //   setLeaps(...leaps, leapsFromContext);
-    // }
     setLeaps(leapsFromContext);
   }, [leapsFromContext]);
 
   const handleSubmit = (filter) => {
-    // console.log('filter', filter);
     setModalVisible(false);
-    // setLeaps([]);
     filterCategoryContext.setFilterCategory(
       filter.category !== '' ? filter.category : undefined,
     );
@@ -114,27 +99,12 @@ function LeapsScreen({ navigation }) {
           onPress={() => {
             setModalVisible(true);
           }}
-
-          // onPress={() => alert('Pressed')}
         >
           <View>
-            {/* <Text>Button</Text> */}
-            <Icon
-              name="filter"
-              backgroundColor={colors.secondary}
-              size={60}
-              // onPress={() => alert('Pressed')}
-            />
+            <Icon name="filter" backgroundColor={colors.secondary} size={60} />
           </View>
         </TouchableWithoutFeedback>
       </View>
-      {/* <View>
-        <FilterButton
-          title="filter"
-          color="third"
-          onPress={() => setModalVisible(true)}
-        />
-      </View> */}
       {errorContext.error && (
         <>
           <AppText>Couldn´t retrieve the leaps</AppText>
@@ -146,7 +116,6 @@ function LeapsScreen({ navigation }) {
           />
         </>
       )}
-      {/* {network.isInternetReachable && alert('No internet connection')} */}
       <ActivityIndicator visible={loading} />
       <View style={{ backgroundColor: 'transparent' }}>
         <FlatList
@@ -158,17 +127,13 @@ function LeapsScreen({ navigation }) {
               leapsStateContext.setIsLeapsStateStale(true);
 
               loadMoreContext.setLoadMore(true);
-              // loadLeaps(true);
-              // console.log('Running');
               loadingMoreContext.setLoadingMore(false);
             }
           }}
           onEndReachedThreshold={0.5}
           onRefresh={() => {
-            // console.log('Running refresh');
             return leapsStateContext.setIsLeapsStateStale(true);
           }}
-          // data={leaps.sort((a, b) => a.id < b.id)}
           data={leaps === [] ? leaps : leaps}
           keyExtractor={(leaps) => leaps.id.toString()}
           renderItem={({ item }) => (
@@ -187,36 +152,19 @@ function LeapsScreen({ navigation }) {
             />
           )}
           ItemSeparatorComponent={LeapItemSeparator}
-          // ListFooterComponent={ListFooterComponent}
-          // ListFooterComponent={() =>
-          //   loadingMore ? (
-          //     <ListFooterComponent
-          //       // children={<Text>Loading more Leaps!</Text>}
-          //       children={<ActivityIndicator visible={true} />}
-          //     />
-          //   ) : (
-          //     <ListFooterComponent />
-          //   )
-          // }
           ListFooterComponent={() =>
             loadingMore && numOfLeaps !== leaps.length ? (
               <ListFooterComponent
-                // children={<Text>Loading...</Text>}
                 children={<ActivityIndicator visible={true} />}
               />
             ) : numOfLeaps === leaps.length ? (
-              <ListFooterComponent
-                children={<Text>This is the end!</Text>}
-                // children={<EndIndicator visible={true} />}
-              />
+              <ListFooterComponent children={<Text>This is the end!</Text>} />
             ) : (
               <ListFooterComponent />
             )
           }
         />
-        {/* <ActivityIndicator visible={loadingMore} /> */}
       </View>
-      {/* <View style={styles.bottom} /> */}
       <Modal testID="modal" visible={modalVisible} animationType="slide">
         <Screen>
           <AppButton
@@ -267,7 +215,6 @@ function LeapsScreen({ navigation }) {
                 filterCategoryContext.setFilterCategory('');
                 filterLocationContext.setFilterLocation('');
 
-                // setLeaps([]);
                 leapsStateContext.setIsLeapsStateStale(true);
                 setModalVisible(false);
               }}
@@ -309,74 +256,3 @@ const styles = StyleSheet.create({
 });
 
 export default LeapsScreen;
-
-// const loadLeaps = async (loadMore) => {
-//   setLoading(true);
-// console.log('location:', filterLocation);
-//   console.log('category:', filterCategory);
-
-//   // const response = await leapsApi.getLeaps();
-//   const response = await getLeapsApi.getfilteredleaps(
-//     filterCategory?.id,
-//     filterLocation?.id,
-//     loadMore ? leaps.slice(-1)[0].id : undefined,
-//   );
-//   // console.log('response of leaps', response.data.errors);
-//   setLoading(false);
-
-//   if (response.data?.errors?.[0]?.message === 'no valid token') {
-//     // console.log('should delete user after this line');
-//     const deletedUser = await cache.deleteUser('user');
-//     console.log('deleteduser', deletedUser);
-//     await authContext.setUser(deletedUser);
-//     await logoutApi.logout();
-//   }
-
-//   if (!response.ok) {
-//     setLoading(false);
-//     return setError(true);
-//   }
-
-//   setError(false);
-//   if (loadMore) {
-//     const oldLeaps = [...leaps];
-//     const alteredLeaps = response.data.map((leap) => ({
-//       ...leap,
-//       category: categories.find(
-//         (category) => category.id === leap.categoryId,
-//       ),
-//     }));
-//     console.log('oldLeaps', oldLeaps.length);
-//     console.log('alteredLeaps', alteredLeaps.length);
-//     const newLeaps = oldLeaps.concat(alteredLeaps);
-//     console.log('newLeaps', newLeaps.length);
-//     return setLeaps(newLeaps);
-//   }
-//   // setLeaps(
-//   //   response.data.map((leap) => ({
-//   //     ...leap,
-//   //     category: categories.find(
-//   //       (category) => category.id === leap.category_id,
-//   //     ),
-//   //   })),
-//   // );
-//   console.log(
-//     response.data.map((leap) => ({
-//       ...leap,
-//       category: categories.find(
-//         (category) => category.id === leap.categoryId,
-//       ),
-//     })),
-//   );
-//   setLeaps(
-//     response.data.map((leap) => ({
-//       ...leap,
-//       category: categories.find(
-//         (category) => category.id === leap.categoryId,
-//       ),
-//     })),
-//   );
-//   // lastLoadedLeapId = response.data.slice(-1)[0].id;
-//   // console.log('response', response.data.slice(-1)[0].id);
-//   // setLastLoadedLeapId(response?.data?.slice(-1)[0]?.id || 1);
-// };

@@ -20,9 +20,6 @@ function LeapAddScreen() {
   const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (leap, { resetForm }) => {
-    console.log('changedMail', leap);
-    console.log('user', user);
-    console.log('leap', leap);
     setProgress(0);
     setUploadVisible(true);
     const result = await changeEmailApi.changeEmail(

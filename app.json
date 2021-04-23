@@ -2,8 +2,9 @@
   "expo": {
     "name": "LeapUp",
     "slug": "LeapUp",
-    "privacy": "puplic",
+    "privacy": "public",
     "version": "1.0.0",
+    "description": "UpLeveled Final project. Check out my GitHub: https://github.com/thomalexg",
     "orientation": "portrait",
     "icon": "./assets/logo-new.png",
     "splash": {

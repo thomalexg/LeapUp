@@ -33,7 +33,6 @@ function MyLeapsScreen({ navigation }) {
   const categoriesContext = useContext(CategoriesContext);
   const categories = categoriesContext.categories;
   const leapsStateContext = useContext(LeapsStateContext);
-  // console.log('leaps', leaps[0]);
   const netInfo = useNetInfo();
 
   useEffect(() => {
@@ -42,18 +41,13 @@ function MyLeapsScreen({ navigation }) {
 
   const loadLeaps = async (loadMore) => {
     setLoading(true);
-    console.log('user of my leaps:', authContext.user);
-    // const response = await leapsApi.getLeaps();
     const response = await myLeapsApi.getMyLeaps(
       authContext.user.value.id,
       loadMore ? leaps.slice(-1)[0].id : undefined,
     );
-    // console.log('response of leaps', response.data.errors);
 
     if (response.data?.errors?.[0]?.message === 'no valid token') {
-      // console.log('should delete user after this line');
       const deletedUser = await cache.deleteUser('user');
-      console.log('deleteduser', deletedUser);
       await authContext.setUser(deletedUser);
       await logoutApi.logout();
     }
@@ -64,7 +58,6 @@ function MyLeapsScreen({ navigation }) {
     }
 
     setNumOfLeaps(response.data.count);
-    console.log('leapsLength', leaps.length);
     setError(false);
     if (loadMore) {
       const oldLeaps = [...leaps];
@@ -74,10 +67,7 @@ function MyLeapsScreen({ navigation }) {
           (category) => category.id === leap.categoryId,
         ),
       }));
-      // console.log('oldLeaps', oldLeaps.length);
-      // console.log('alteredLeaps', alteredLeaps.length);
       const newLeaps = oldLeaps.concat(alteredLeaps);
-      // console.log('newLeaps', newLeaps.length);
       return setLeaps(newLeaps);
     }
 
@@ -92,7 +82,6 @@ function MyLeapsScreen({ navigation }) {
   };
 
   const handleDelete = async (item) => {
-    // console.log('item', item);
     await deleteLeapApi.deleteLeap(item);
     loadLeaps();
     leapsStateContext.setIsLeapsStateStale(true);
@@ -105,8 +94,6 @@ function MyLeapsScreen({ navigation }) {
           <AppButton title="Refresh" onPress={loadLeaps} />
         </>
       )}
-      {/* {network.isInternetReachable && alert('No internet connection')} */}
-      {/* <ActivityIndicator visible={loading} /> */}
       <FlatList
         refreshing={refreshing}
         maintainVisibleContentPosition={true}
@@ -115,7 +102,6 @@ function MyLeapsScreen({ navigation }) {
             setLoadingMore(true);
 
             loadLeaps(true);
-            console.log('Running');
             setLoadingMore(false);
           }
         }}
@@ -123,7 +109,6 @@ function MyLeapsScreen({ navigation }) {
         onRefresh={() => {
           loadLeaps();
         }}
-        // data={leaps.sort((a, b) => a.id < b.id)}
         data={leaps}
         keyExtractor={(leaps) => leaps.id.toString()}
         renderItem={({ item }) => (
@@ -145,17 +130,14 @@ function MyLeapsScreen({ navigation }) {
           />
         )}
         ItemSeparatorComponent={LeapItemSeparator}
-        // ListFooterComponent={ListFooterComponent}
         ListFooterComponent={() =>
           loading && numOfLeaps !== leaps.length ? (
             <ListFooterComponent
-              // children={<Text>Loading...</Text>}
               children={<ActivityIndicator visible={true} />}
             />
           ) : numOfLeaps === leaps.length ? (
             <ListFooterComponent
               children={<Text>This is the end!</Text>}
-              // children={<EndIndicator visible={true} />}
             />
           ) : (
             <ListFooterComponent />

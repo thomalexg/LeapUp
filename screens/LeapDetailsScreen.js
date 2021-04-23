@@ -25,7 +25,6 @@ function LeapDetailsScreen({ route, navigation }) {
   const location = locations.filter(
     (location) => location.id === listing.locationId,
   )[0];
-  // const [string, setString] = useState('');
 
   function clipboard() {
     setCopied(true);
@@ -58,7 +57,6 @@ function LeapDetailsScreen({ route, navigation }) {
       authContext.user.value.id,
       listing.id,
     );
-    console.log('save it', response);
     if (response.data?.errors?.[0]?.message === 'leap already saved') {
       already();
       return;
@@ -76,23 +74,10 @@ function LeapDetailsScreen({ route, navigation }) {
           underlayColor={colors.light}
           onPress={() => {
             saveAsFav();
-            // favoriteApi.saveLeapAsFavorite(
-            //   authContext.user.value.id,
-            //   listing.id,
-            // );
-            // favourit();
-            // // alert('Saved as favorite');
           }}
-
-          // onPress={() => alert('Pressed')}
         >
           <View>
-            {/* <Text>Button</Text> */}
-            <Icon
-              name="star"
-              backgroundColor={colors.primary}
-              // onPress={() => alert('Pressed')}
-            />
+            <Icon name="star" backgroundColor={colors.primary} />
           </View>
         </TouchableHighlight>
       </View>
@@ -117,16 +102,13 @@ function LeapDetailsScreen({ route, navigation }) {
         </View>
       )}
       <ScrollView>
-        {/* <Image style={styles.image} source={require('../assets/jacket.jpg')} /> */}
         <View style={styles.detailsContainer}>
           <Text style={styles.title}>{listing.title}</Text>
           <Text style={styles.description}>{listing.description}</Text>
           <View style={styles.userContainer}>
             <ListItem
-              // image={require('../assets/thomas.jpg')}
               showIcon={true}
               title={listing.username || 'No username available'}
-              // subTitle="3 Leaps"
               IconComponent={
                 <Icon name="account" backgroundColor={colors.secondary} />
               }
@@ -136,11 +118,9 @@ function LeapDetailsScreen({ route, navigation }) {
               }}
             />
             <ListItem
-              // image={require('../assets/thomas.jpg')}
               showCopy={true}
               showIcon={false}
               title={listing.email || 'Error'}
-              // subTitle="3 Leaps"
               IconComponent={
                 <Icon name="email" backgroundColor={colors.medium} />
               }
@@ -148,25 +128,19 @@ function LeapDetailsScreen({ route, navigation }) {
                 const email = listing.email;
 
                 Clipboard.setString(email);
-                // const text = await Clipboard.getStringAsync();
                 clipboard();
-                // alert(`Copied ${email}:)`);
               }}
             />
             <ListItem
-              // image={require('../assets/thomas.jpg')}
               showIcon={false}
               title={location?.city || 'No location available'}
-              // subTitle="3 Leaps"
               IconComponent={
                 <Icon name="city-variant" backgroundColor={colors.secondary} />
               }
             />
             <ListItem
-              // image={require('../assets/thomas.jpg')}
               showIcon={false}
               title={listing.category?.category || 'No category available'}
-              // subTitle="3 Leaps"
               IconComponent={
                 <Icon
                   name={listing.category.icon}
@@ -175,7 +149,6 @@ function LeapDetailsScreen({ route, navigation }) {
               }
             />
           </View>
-          {/* {copied && <Text>Copied {listing.email}</Text>} */}
         </View>
       </ScrollView>
     </Screen>

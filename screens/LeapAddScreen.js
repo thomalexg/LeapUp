@@ -12,7 +12,7 @@ import {
   Form,
   FormField,
   FormPicker as Picker,
-  SubmitButton,
+  SubmitButton
 } from '../components/forms';
 import Screen from '../components/Screen';
 import SearchbarDropdown from '../components/SearchbarDropdown';
@@ -28,11 +28,7 @@ const validationSchema = Yup.object().shape({
 function LeapAddScreen() {
   const authContext = useContext(AuthContext);
   const locationsContext = useContext(LocationsContext);
-  // const [stadt, setStadt] = useContext('');
-  // console.log('locationsContext:', locationsContext);
   const locations = locationsContext.locations;
-  // console.log('locations:', locations);
-  // console.log('ADDScreen user', authContext.user);
   const user = authContext.user;
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -40,20 +36,15 @@ function LeapAddScreen() {
   const [deleteCity, setDeleteCity] = useState(false);
   const leapsStateContext = useContext(LeapsStateContext);
   const [cityReset, setCityReset] = useState(false);
-  // console.log('The categories', categories);
   useEffect(() => {
     const categorieFunc = async () => {
       const getCategories = await categoriesApi.getCategories();
-      // console.log('The categories should be here:', getCategories.data);
       setCategories(getCategories.data);
     };
     categorieFunc();
   }, []);
 
   const handleSubmit = async (leap, { resetForm }) => {
-    // console.log('leapAdd', leap);
-    // // console.log('userAdd', user);
-    // console.log('leap', leap);
     setProgress(0);
     setUploadVisible(true);
     const result = await leapsApi.addLeap(leap, user, (progress) =>
@@ -68,7 +59,6 @@ function LeapAddScreen() {
     leapsStateContext.setIsLeapsStateStale(true);
     setCityReset(true);
     resetForm();
-    // navigation.navigate(routes.MYLEAPS);
   };
 
   return (

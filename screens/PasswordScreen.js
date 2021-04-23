@@ -25,8 +25,6 @@ function LeapAddScreen() {
   const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (leap, { resetForm }) => {
-    console.log('changePassword', leap);
-    console.log('userPassword', user);
     setProgress(0);
     setUploadVisible(true);
     const result = await changePasswordApi.changePassword(

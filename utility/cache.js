@@ -24,12 +24,8 @@ const isExpired = (item, expiryInMinutes = 5) => {
 
 const get = async (key, expiryInMinutes) => {
   try {
-    // console.log('prefix', prefix);
-    // console.log('key', key);
     const value = await AsyncStorage.getItem(prefix + key);
-    // console.log('value', value);
     const item = JSON.parse(value);
-    // console.log('item', item);
 
     if (!item) return null;
 

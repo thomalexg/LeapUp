@@ -4,8 +4,6 @@ const endpoint = '/leaps';
 const getLeaps = () => client.get(endpoint);
 
 export const addLeap = (leap, user, onUploadProgress) => {
-  console.log('leap in Api', leap);
-  console.log('user in Api', user);
   return client.post(
     endpoint,
     {

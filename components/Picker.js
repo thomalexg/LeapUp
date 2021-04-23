@@ -52,11 +52,6 @@ function AppPicker({
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
-          {/* <View>
-            <Pressable onPress={() => console.log('pressed')}>
-              <Text>Press me</Text>
-            </Pressable>
-          </View> */}
           <Button title="Close" onPress={() => setModalVisible(false)} />
           <FlatList
             data={items}
