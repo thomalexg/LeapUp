@@ -5,8 +5,6 @@ import AuthContext from '../auth/context';
 import { Form, FormField, SubmitButton } from '../components/forms';
 import Screen from '../components/Screen';
 import cache from '../utility/cache';
-  SubmitButton,
-} from '../components/forms';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required().min(4).max(20).label('Username'),

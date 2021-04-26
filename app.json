@@ -16,6 +16,10 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.thomalexg.leapup",
+      "versionCode": 1
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     }
